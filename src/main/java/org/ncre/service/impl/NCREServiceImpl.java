@@ -31,11 +31,8 @@ public class NCREServiceImpl implements NCREService {
     }
 
     @Override
-    public User GetUserInfoByAccount(String account) {
-        User user1 = new User();
-        user1.setAccount(userDao.FindAPByAccount(account));
-        user1.setUserInfo(userDao.FindInformationByAccount(account));
-        return user1;
+    public UserInfo GetUserInfoByAccount(String account) {
+        return userDao.FindInformationByAccount(account);
     }
 
     @Override

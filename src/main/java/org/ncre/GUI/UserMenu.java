@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class UserMenu implements ActionListener {
@@ -82,6 +83,12 @@ public class UserMenu implements ActionListener {
         this.ncre = ncre;
     }
     public void UserMenuUpdate(){
+        // 获取用户信息
+        try {
+            user.setUserInfo(ncreService.GetUserInfoByAccount(user.getAccount().getAccount()));
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage(),"消息提示",JOptionPane.WARNING_MESSAGE);
+        }
         UserMenuAccountJL2.setText(user.getAccount().getAccount());
     }
     public JPanel Init(){
@@ -140,8 +147,6 @@ public class UserMenu implements ActionListener {
         Menu3Item2.setActionCommand("FindInfoJP");
         Menu4Item1.setActionCommand("LogOffJP");
         Menu4Item2.setActionCommand("LogOutJP");
-
-
 
         PictureJP.setBackground(Color.white);
         UserMenuAccountJP.setBackground(new Color(65,91,128));
@@ -317,6 +322,41 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(false);
     }
     public void SignUpJP(){
+        if(user.getUserInfo() != null){
+            if(user.getUserInfo().getName() != null){
+                SignUpNameJTF.setText(user.getUserInfo().getName());
+                SignUpNameJTF.setEnabled(false);
+            }
+            if(user.getUserInfo().getGender() != null){
+                if(user.getUserInfo().getAge() != null){
+                    SignUpAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
+                    SignUpAgeJTF.setEnabled(false);
+                }
+                if(user.getUserInfo().getGender() != null) {
+                    if (Objects.equals(user.getUserInfo().getGender(), "男")) {
+                        SignUpGender.setSelectedItem("男");
+                    } else {
+                        SignUpGender.setSelectedItem("女");
+                    }
+                    SignUpGender.setEnabled(false);
+                }
+                if(user.getUserInfo().getSchoolid()!=null){
+                    SignUpSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
+                    SignUpSchoolidJTF.setEnabled(false);
+                }
+                if(user.getUserInfo().getPhone()!=null){
+                    SignUpPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
+                    SignUpPhoneJTF.setEnabled(false);
+                }
+                if(user.getUserInfo().getSchool()!=null){
+                    SignUpSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
+                    SignUpSchoolJTF.setEnabled(false);
+                }
+            }
+
+
+        }
+
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(true);
         UserMenuFindInfoJP.setVisible(false);
@@ -341,6 +381,9 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(false);
     }
     public void LogOffJP(){
+        user.setAccount(null);
+        user.setUserInfo(null);
+        SignUpClear();
         ncre.Load();
 
     }
@@ -369,27 +412,30 @@ public class UserMenu implements ActionListener {
                 SignUpRank.getSelectedItem() == "-请选择-"){
             JOptionPane.showMessageDialog(null, "请将信息填写完整！","消息提示",JOptionPane.WARNING_MESSAGE);
         }else {
-            String TName = SignUpNameJTF.getText();
-            String TGender = (String) SignUpGender.getSelectedItem();
-            Integer TAge = Integer.valueOf(SignUpAgeJTF.getText());
-            String TSchoolid = SignUpSchoolidJTF.getText();
-            String TSchool = SignUpSchoolJTF.getText();
-            String TRank = (String) SignUpRank.getSelectedItem();
-            String TPhone = SignUpPhoneJTF.getText();
-
-            UserInfo userInfo = new UserInfo();
-            userInfo.setAccount(user.getAccount().getAccount());
-            userInfo.setName(TName);
-            userInfo.setGender(TGender);
-            userInfo.setAge(TAge);
-            userInfo.setSchoolid(TSchoolid);
-            userInfo.setSchool(TSchool);
-            userInfo.setRank(TRank);
-            userInfo.setPhone(TPhone);
-            ncreService.SaveUserInfo(userInfo);
-            JOptionPane.showMessageDialog(null, "报名成功！","消息提示",JOptionPane.WARNING_MESSAGE);
-            SignUpClear();
-
+            if(user.getUserInfo().getRank()!=null){
+                JOptionPane.showMessageDialog(null, "请勿重复报名！","消息提示",JOptionPane.WARNING_MESSAGE);
+            }
+            else {
+                String TName = SignUpNameJTF.getText();
+                String TGender = (String) SignUpGender.getSelectedItem();
+                Integer TAge = Integer.valueOf(SignUpAgeJTF.getText());
+                String TSchoolid = SignUpSchoolidJTF.getText();
+                String TSchool = SignUpSchoolJTF.getText();
+                String TRank = (String) SignUpRank.getSelectedItem();
+                String TPhone = SignUpPhoneJTF.getText();
+                UserInfo userInfo = new UserInfo();
+                userInfo.setAccount(user.getAccount().getAccount());
+                userInfo.setName(TName);
+                userInfo.setGender(TGender);
+                userInfo.setAge(TAge);
+                userInfo.setSchoolid(TSchoolid);
+                userInfo.setSchool(TSchool);
+                userInfo.setRank(TRank);
+                userInfo.setPhone(TPhone);
+                ncreService.SaveUserInfo(userInfo);
+                JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                SignUpClear();
+            }
         }
     }
 

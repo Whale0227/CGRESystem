@@ -204,6 +204,8 @@ public class UserLogin extends JFrame implements ActionListener{
         this.setLocationRelativeTo(null);//在屏幕中间显示(居中显示)
         this.add(LoginJP);
         this.add(RegisterJP);
+        LoginJP.setVisible(true);
+        RegisterJP.setVisible(false);
         this.setVisible(true);  //设置可见
         this.setResizable(false);   //设置不可拉伸大小
         return userAccount;

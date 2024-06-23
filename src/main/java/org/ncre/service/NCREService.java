@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NCREService {
     List<AdministratorAccount> GetAllAdministratorAccount();
-    User GetUserInfoByAccount(String account);
+    UserInfo GetUserInfoByAccount(String account);
     UserAccount GetUserAPByAccount(String account);
     AdministratorAccount GetADAccountByAccount(String account);
     void SaveUserAcPw(UserAccount userAccount);
