@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class UserMenu implements ActionListener {
@@ -322,6 +321,7 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(false);
     }
     public void SignUpJP(){
+        UserMenuUpdate();
         if(user.getUserInfo() != null){
             if(user.getUserInfo().getName() != null){
                 SignUpNameJTF.setText(user.getUserInfo().getName());
@@ -356,7 +356,6 @@ public class UserMenu implements ActionListener {
 
 
         }
-
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(true);
         UserMenuFindInfoJP.setVisible(false);
@@ -398,12 +397,19 @@ public class UserMenu implements ActionListener {
 
     public void SignUpClear(){
         SignUpNameJTF.setText("");
+        SignUpNameJTF.setEnabled(true);
         SignUpGender.setSelectedItem("-请选择-");
+        SignUpGender.setEnabled(true);
         SignUpAgeJTF.setText("");
+        SignUpAgeJTF.setEnabled(true);
         SignUpSchoolidJTF.setText("");
+        SignUpSchoolidJTF.setEnabled(true);
         SignUpSchoolJTF.setText("");
+        SignUpSchoolJTF.setEnabled(true);
         SignUpRank.setSelectedItem("-请选择-");
+        SignUpRank.setEnabled(true);
         SignUpPhoneJTF.setText("");
+        SignUpPhoneJTF.setEnabled(true);
     }
     public void SignUp(){
         if(Objects.equals(SignUpNameJTF.getText(), "") ||Objects.equals(SignUpAgeJTF.getText(), "") ||
@@ -412,7 +418,7 @@ public class UserMenu implements ActionListener {
                 SignUpRank.getSelectedItem() == "-请选择-"){
             JOptionPane.showMessageDialog(null, "请将信息填写完整！","消息提示",JOptionPane.WARNING_MESSAGE);
         }else {
-            if(user.getUserInfo().getRank()!=null){
+            if(user.getUserInfo() != null&&user.getUserInfo().getRank()!=null){
                 JOptionPane.showMessageDialog(null, "请勿重复报名！","消息提示",JOptionPane.WARNING_MESSAGE);
             }
             else {
