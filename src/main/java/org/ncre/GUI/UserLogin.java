@@ -218,7 +218,7 @@ public class UserLogin extends JFrame implements ActionListener{
             String Taccount = LoginJTF.getText();
             String Tpassword = LoginJPF.getText();
             userAccount = LoginCGERService.GetUserAPByAccount(Taccount);
-            if(Objects.equals(Tpassword, userAccount.getPassword())){
+            if(userAccount != null&&Objects.equals(Tpassword, userAccount.getPassword())){
                 JOptionPane.showMessageDialog(null, "登录成功！","消息提示",JOptionPane.WARNING_MESSAGE);
                 LoginClear();
                 dispose();  //使文原窗体消失

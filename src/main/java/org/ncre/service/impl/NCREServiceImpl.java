@@ -19,49 +19,47 @@ public class NCREServiceImpl implements NCREService {
     private AdministratorAccountDao administerAccountdao;
     @Autowired
     private UserDao userDao;
-
-    private User user;
     @Override
     public List<AdministratorAccount> GetAllAdministratorAccount() {
         return administerAccountdao.getAllAccounts();
     }
-
     @Override
     public UserAccount GetUserAPByAccount(String account) {
         return userDao.FindAPByAccount(account);
     }
-
     @Override
     public UserInfo GetUserInfoByAccount(String account) {
         return userDao.FindInformationByAccount(account);
     }
-
     @Override
     public AdministratorAccount GetADAccountByAccount(String account) {
         return administerAccountdao.getByAccount(account);
     }
-
     @Override
     public boolean SaveUserAcPw(UserAccount userAccount) {
         boolean Check = false;
         if(GetUserAPByAccount(userAccount.getAccount()) == null){
             userDao.SaveAcPw(userAccount);
+            userDao.SaveInfoInit(userAccount);
             Check = true;
         }else{
             JOptionPane.showMessageDialog(null, "该账户已存在，请重新输入！","消息提示",JOptionPane.WARNING_MESSAGE);
         }
        return Check;
     }
-
     @Override
     public boolean SaveUserInfo(UserInfo userInfo) {
         String regex = "1\\d{10}";//定义手机号规则
         boolean flag = userInfo.getPhone().matches(regex);//判断功能
         if (flag) {
-            userDao.SaveAllInfoByAccount(userInfo);
+            userDao.UpadteAllInfoByAccount(userInfo);
         }else {
             JOptionPane.showMessageDialog(null, "请填写正确的手机号！","消息提示",JOptionPane.WARNING_MESSAGE);
         }
         return flag;
+    }
+    public void DeleteUserInfoAccountByAccount(UserAccount userAccount){
+        userDao.DeleteUserInfoByAccount(userAccount);
+        userDao.DeleteUserAccountByAccount(userAccount);
     }
 }

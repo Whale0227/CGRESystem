@@ -14,4 +14,5 @@ public interface NCREService {
     AdministratorAccount GetADAccountByAccount(String account);
     boolean SaveUserAcPw(UserAccount userAccount);
     boolean SaveUserInfo(UserInfo userInfo);
+    void DeleteUserInfoAccountByAccount(UserAccount userAccount);
 }

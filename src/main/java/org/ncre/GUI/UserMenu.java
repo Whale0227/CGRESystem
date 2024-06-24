@@ -14,21 +14,19 @@ import java.util.Objects;
 public class UserMenu implements ActionListener {
     private JPanel UserMenuJP;
     private JPanel PictureJP, UserMenuAccountJP,UserMenuBarJP,UserMenuFirstJP,
-            UserMenuSignUpJP,UserMenuFindInfoJP,UserMenuReviseInfoJP,
-            UserMenuLogOffJP,UserMenuLogOutJP;
+            UserMenuSignUpJP,UserMenuReviseInfoJP,
+            UserMenuLogOffJP;
 
     private JLabel Picture;
-    private JLabel UserMenuAccountJL1,UserMenuAccountJL2;
+    private JLabel UserMenuAccountJL1,UserMenuAccountJL2;   // 展示登录账号
     private JMenuBar menuBar;// 下拉式菜单
-    private JMenu menu1,menu2,menu3,menu4;
-    private JMenuItem Menu1Item1,Menu2Item1,Menu3Item1, Menu3Item2, Menu4Item1,Menu4Item2;
-    private Icon icon;
-    private Styles styles;
-    private User user;
-    private NCREService ncreService;
-
-    private NCRE ncre;
-
+    private JMenu menu1,menu2,menu3,menu4;  // 菜单栏选项
+    private JMenuItem Menu1Item1,Menu2Item1,Menu3Item1, Menu4Item1,Menu4Item2;  //菜单栏下拉选项
+    private Icon icon;  // 资源图片
+    private Styles styles;  // 格式
+    private User user;  // 用户信息
+    private NCREService ncreService;    // 服务器
+    private NCRE ncre;  // 主面板
     private JButton SignUpButtonSignup,SignUpButtonClear;
     private JPanel SignUpButtonSignupJP;
     private JPanel SignUpInfoJP;
@@ -62,16 +60,13 @@ public class UserMenu implements ActionListener {
         Menu1Item1 = new JMenuItem("首页");
         Menu2Item1 = new JMenuItem("考试报名");
         Menu3Item1 = new JMenuItem("修改个人信息");
-        Menu3Item2 = new JMenuItem("查看考试信息");
         Menu4Item1 = new JMenuItem("退出登录");
         Menu4Item2 = new JMenuItem("注销账户");
         UserMenuAccountJP = new JPanel(new FlowLayout(FlowLayout.LEFT));
         UserMenuFirstJP = new JPanel();
 
-        UserMenuFindInfoJP = new JPanel();
         UserMenuReviseInfoJP = new JPanel();
         UserMenuLogOffJP = new JPanel();
-        UserMenuLogOutJP = new JPanel();
 
 
         UserMenuSignUpJP = new JPanel();
@@ -85,23 +80,17 @@ public class UserMenu implements ActionListener {
 
     }
     // 设置用户登录的账户
-    public void SetUserAP(UserAccount userAccount){
+    public void Initialize(UserAccount userAccount){
         user.setAccount(userAccount);
+        UserInfoUpdate();
+        First();
     }
     public void SetNCRE(NCRE ncre){
         this.ncre = ncre;
     }
-    public void UserMenuUpdate(){
-        // 获取用户信息
-        try {
-            user.setUserInfo(ncreService.GetUserInfoByAccount(user.getAccount().getAccount()));
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(),"消息提示",JOptionPane.WARNING_MESSAGE);
-        }
-        UserMenuAccountJL2.setText(user.getAccount().getAccount());
-    }
-    public JPanel Init(){
 
+    public JPanel Init(){
+        UserInfoUpdate();
         UserMenuJP.setBounds(0,0,styles.MaxWidth,styles.MaxHeight);
         UserMenuJP.setLayout(null);
         PictureJP.setLayout(null);
@@ -114,12 +103,8 @@ public class UserMenu implements ActionListener {
         UserMenuBarJP.setBounds(300,100,1200,40);
         UserMenuFirstJP.setBounds(0,140,1200,660);
         UserMenuSignUpJP.setBounds(0,140,1200,660);
-        UserMenuFindInfoJP.setBounds(0,140,1200,660);
         UserMenuReviseInfoJP.setBounds(0,140,1200,660);
         UserMenuLogOffJP.setBounds(0,140,1200,660);
-        UserMenuLogOutJP.setBounds(0,140,1200,660);
-
-
 
         UserMenuAccountJL1.setFont(styles.SmallJLFont);
         UserMenuAccountJL2.setFont(styles.SmallJLFont);
@@ -131,7 +116,6 @@ public class UserMenu implements ActionListener {
         menu1.add(Menu1Item1);
         menu2.add(Menu2Item1);
         menu3.add(Menu3Item1);
-        menu3.add(Menu3Item2);
         menu4.add(Menu4Item1);
         menu4.add(Menu4Item2);
         menu1.setFont(styles.MenuBarFont);
@@ -141,20 +125,17 @@ public class UserMenu implements ActionListener {
         Menu1Item1.setFont(styles.MenuBarButtonFont);
         Menu2Item1.setFont(styles.MenuBarButtonFont);
         Menu3Item1.setFont(styles.MenuBarButtonFont);
-        Menu3Item2.setFont(styles.MenuBarButtonFont);
         Menu4Item1.setFont(styles.MenuBarButtonFont);
         Menu4Item2.setFont(styles.MenuBarButtonFont);
 
         Menu1Item1.addActionListener(this);
         Menu2Item1.addActionListener(this);
         Menu3Item1.addActionListener(this);
-        Menu3Item2.addActionListener(this);
         Menu4Item1.addActionListener(this);
         Menu4Item2.addActionListener(this);
         Menu1Item1.setActionCommand("FirstJP");
         Menu2Item1.setActionCommand("SignUpJP");
         Menu3Item1.setActionCommand("ReviseInfoJP");
-        Menu3Item2.setActionCommand("FindInfoJP");
         Menu4Item1.setActionCommand("LogOffJP");
         Menu4Item2.setActionCommand("LogOutJP");
 
@@ -163,12 +144,8 @@ public class UserMenu implements ActionListener {
         UserMenuBarJP.setBackground(Color.red);
         UserMenuFirstJP.setBackground(Color.pink);
         UserMenuSignUpJP.setBackground(Color.green);
-        UserMenuFindInfoJP.setBackground(Color.yellow);
         UserMenuReviseInfoJP.setBackground(Color.magenta);
         UserMenuLogOffJP.setBackground(Color.cyan);
-        UserMenuLogOutJP.setBackground(Color.orange);
-
-
 
         Picture.setIcon(icon);
         UserMenuJP.add(PictureJP);
@@ -178,17 +155,13 @@ public class UserMenu implements ActionListener {
 
         UserMenuJP.add(UserMenuFirstJP);
         UserMenuJP.add(UserMenuSignUpJP);
-        UserMenuJP.add(UserMenuFindInfoJP);
         UserMenuJP.add(UserMenuReviseInfoJP);
         UserMenuJP.add(UserMenuLogOffJP);
-        UserMenuJP.add(UserMenuLogOutJP);
 
         UserMenuFirstJP.setVisible(true);
         UserMenuSignUpJP.setVisible(false);
-        UserMenuFindInfoJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
         UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(false);
 
         UserMenuAccountJP.add(UserMenuAccountJL1);
         UserMenuAccountJP.add(UserMenuAccountJL2);
@@ -323,6 +296,7 @@ public class UserMenu implements ActionListener {
         UserMenuSignUpJP.add(SignUpButtonSignupJP);
     }
     public void ReviseInfoJPInit(){
+        ReviseInfoGender.addItem("-请选择-");
         ReviseInfoGender.addItem("男");
         ReviseInfoGender.addItem("女");
 
@@ -440,12 +414,19 @@ public class UserMenu implements ActionListener {
     public void First(){
         UserMenuFirstJP.setVisible(true);
         UserMenuSignUpJP.setVisible(false);
-        UserMenuFindInfoJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
         UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(false);
+    }
+    private void UserInfoUpdate(){
+        try {
+            user.setUserInfo(ncreService.GetUserInfoByAccount(user.getAccount().getAccount()));
+            UserMenuAccountJL2.setText(user.getAccount().getAccount());
+        }catch (NullPointerException e){
+
+        }
     }
     public void SignUpJP(){
+        UserInfoUpdate();
         if(user.getUserInfo() != null){
             if(user.getUserInfo().getName() != null){
                 SignUpNameJTF.setText(user.getUserInfo().getName());
@@ -458,6 +439,7 @@ public class UserMenu implements ActionListener {
                 }
                 if(user.getUserInfo().getGender() != null) {
                     SignUpGender.setSelectedItem(user.getUserInfo().getGender());
+                    SignUpGender.setEnabled(false);
                 }
                 if(user.getUserInfo().getSchoolid()!=null){
                     SignUpSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
@@ -471,28 +453,29 @@ public class UserMenu implements ActionListener {
                     SignUpSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
                     SignUpSchoolJTF.setEnabled(false);
                 }
-                if(user.getUserInfo().getRank() != null){
-                    SignUpRank.setSelectedItem(user.getUserInfo().getRank());
-                    SignUpRank.setEnabled(false);
+                if(user.getUserInfo().getRank() != null) {
+                    if (Objects.equals(user.getUserInfo().getRank(), "无")) {
+                    } else {
+                        SignUpRank.setSelectedItem(user.getUserInfo().getRank());
+                        SignUpRank.setEnabled(false);
+                    }
                 }
             }
         }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(true);
-        UserMenuFindInfoJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
         UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(false);
     }
     public void FindInfoJP(){
+        UserInfoUpdate();
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(false);
-        UserMenuFindInfoJP.setVisible(true);
         UserMenuReviseInfoJP.setVisible(false);
         UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(false);
     }
     public void ReviseInfoJP(){
+        UserInfoUpdate();
         if(user.getUserInfo() != null){
             if(user.getUserInfo().getName() != null){
                 ReviseInfoNameJTF.setText(user.getUserInfo().getName());
@@ -502,11 +485,9 @@ public class UserMenu implements ActionListener {
                     ReviseInfoAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
                 }
                 if(user.getUserInfo().getGender() != null) {
-                    if (Objects.equals(user.getUserInfo().getGender(), "男")) {
-                        ReviseInfoGender.setSelectedItem("男");
-                    } else {
-                        ReviseInfoGender.setSelectedItem("女");
-                    }
+                    ReviseInfoGender.setSelectedItem(user.getUserInfo().getGender());
+                }else{
+                    ReviseInfoGender.setSelectedItem("-请选择-");
                 }
                 if(user.getUserInfo().getSchoolid()!=null){
                     ReviseInfoSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
@@ -516,67 +497,76 @@ public class UserMenu implements ActionListener {
                 }
                 if(user.getUserInfo().getSchool()!=null){
                     ReviseInfoSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
-                }if(user.getUserInfo().getRank()!=null){
+                }
+                if(user.getUserInfo().getRank()!=null){
                     ReviseInfoRankJTF.setText(user.getUserInfo().getRank());
+                    ReviseInfoRankJTF.setEnabled(false);
+                }else{
+                    ReviseInfoRankJTF.setText("无");
                     ReviseInfoRankJTF.setEnabled(false);
                 }
             }
         }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(false);
-        UserMenuFindInfoJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(true);
         UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(false);
     }
     public void LogOffJP(){
         user.setAccount(null);
         user.setUserInfo(null);
+        UserInfoUpdate();
         SignUpJP();
         ncre.Load();
     }
-    public void LogOutJP(){
-        UserMenuFirstJP.setVisible(false);
-        UserMenuSignUpJP.setVisible(false);
-        UserMenuFindInfoJP.setVisible(false);
-        UserMenuReviseInfoJP.setVisible(false);
-        UserMenuLogOffJP.setVisible(false);
-        UserMenuLogOutJP.setVisible(true);
-    }
-
-    public void SignUp(){
-        if(Objects.equals(SignUpNameJTF.getText(), "") ||Objects.equals(SignUpAgeJTF.getText(), "") ||
-                Objects.equals(SignUpSchoolidJTF.getText(), "") ||Objects.equals(SignUpPhoneJTF.getText(), "") ||
-                Objects.equals(SignUpSchoolJTF.getText(), "") ||SignUpGender.getSelectedItem() == "-请选择-"||
-                SignUpRank.getSelectedItem() == "-请选择-"){
-            JOptionPane.showMessageDialog(null, "请将信息填写完整！","消息提示",JOptionPane.WARNING_MESSAGE);
-        }else {
-            if(user.getUserInfo() != null&&user.getUserInfo().getRank()!=null){
-                JOptionPane.showMessageDialog(null, "请勿重复报名！","消息提示",JOptionPane.WARNING_MESSAGE);
-            }
-            else {
-                UserInfo userInfo = new UserInfo();
-                userInfo.setAccount(user.getAccount().getAccount());
-                userInfo.setName(SignUpNameJTF.getText());
-                userInfo.setGender((String) SignUpGender.getSelectedItem());
-                userInfo.setAge(Integer.valueOf(SignUpAgeJTF.getText()));
-                userInfo.setSchoolid(SignUpSchoolidJTF.getText());
-                userInfo.setSchool(SignUpSchoolJTF.getText());
-                userInfo.setRank((String) SignUpRank.getSelectedItem());
-                userInfo.setPhone(SignUpPhoneJTF.getText());
-                ncreService.SaveUserInfo(userInfo);
-                JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
-                SignUpJP();
-            }
+    public void LogOut(){
+        int userOption =  JOptionPane.showConfirmDialog(null,"该操作无法恢复，请确认是否继续删除账户？","提示",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);	//确认对话框
+        //如果用户选择的是OK
+        if (userOption == JOptionPane.OK_OPTION) {
+            ncreService.DeleteUserInfoAccountByAccount(user.getAccount());
+            LogOffJP();
         }
     }
+    public void SignUp(){
+        int userOption =  JOptionPane.showConfirmDialog(null,"您要报名吗？","提示",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);	//确认对话框
+        //如果用户选择的是OK
+        if (userOption == JOptionPane.OK_OPTION) {
+            if (Objects.equals(SignUpNameJTF.getText(), "") || Objects.equals(SignUpAgeJTF.getText(), "") ||
+                    Objects.equals(SignUpSchoolidJTF.getText(), "") || Objects.equals(SignUpPhoneJTF.getText(), "") ||
+                    Objects.equals(SignUpSchoolJTF.getText(), "") || SignUpGender.getSelectedItem() == "-请选择-" ||
+                    SignUpRank.getSelectedItem() == "-请选择-") {
+                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (user.getUserInfo() != null && (user.getUserInfo().getRank() != null) && !Objects.equals(user.getUserInfo().getRank(), "无")) {
+                    JOptionPane.showMessageDialog(null, "请勿重复报名！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setAccount(user.getAccount().getAccount());
+                    userInfo.setName(SignUpNameJTF.getText());
+                    userInfo.setGender((String) SignUpGender.getSelectedItem());
+                    userInfo.setAge(Integer.valueOf(SignUpAgeJTF.getText()));
+                    userInfo.setSchoolid(SignUpSchoolidJTF.getText());
+                    userInfo.setSchool(SignUpSchoolJTF.getText());
+                    userInfo.setRank((String) SignUpRank.getSelectedItem());
+                    userInfo.setPhone(SignUpPhoneJTF.getText());
+                    ncreService.SaveUserInfo(userInfo);
+                    JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                    SignUpJP();
+                }
+            }
 
+        }
+    }
     public void Revise(){
-        if(Objects.equals(ReviseInfoNameJTF.getText(), "") ||Objects.equals(ReviseInfoAgeJTF.getText(), "") ||
-                Objects.equals(ReviseInfoSchoolidJTF.getText(), "") ||Objects.equals(ReviseInfoPhoneJTF.getText(), "") ||
-                Objects.equals(ReviseInfoSchoolJTF.getText(), "")){
-            JOptionPane.showMessageDialog(null, "请将信息填写完整！","消息提示",JOptionPane.WARNING_MESSAGE);
-        }else {
+        int userOption =  JOptionPane.showConfirmDialog(null,"您修改信息吗？","提示",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);	//确认对话框
+        //如果用户选择的是OK
+        if (userOption == JOptionPane.OK_OPTION) {
+            if (SignUpRank.getSelectedItem() != "无"&&(Objects.equals(SignUpNameJTF.getText(), "") || Objects.equals(SignUpAgeJTF.getText(), "") ||
+                    Objects.equals(SignUpSchoolidJTF.getText(), "") || Objects.equals(SignUpPhoneJTF.getText(), "") ||
+                    Objects.equals(SignUpSchoolJTF.getText(), "") || SignUpGender.getSelectedItem() == "-请选择-")
+                    ) {
+                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            }
             String TName = ReviseInfoNameJTF.getText();
             String TGender = (String) ReviseInfoGender.getSelectedItem();
             Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
@@ -599,7 +589,6 @@ public class UserMenu implements ActionListener {
             }
         }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(Objects.equals(e.getActionCommand(), "FirstJP")){
@@ -618,7 +607,7 @@ public class UserMenu implements ActionListener {
             this.LogOffJP();
         }
         else if(Objects.equals(e.getActionCommand(), "LogOutJP")){
-            this.LogOutJP();
+            this.LogOut();
         }
         else if(Objects.equals(e.getActionCommand(), "SignUp")){
             this.SignUp();

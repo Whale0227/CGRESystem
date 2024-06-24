@@ -82,11 +82,11 @@ public class NCRE extends JFrame implements ActionListener {
         UserMenuJP.setVisible(false);
     }
     public void UserMenu(UserAccount userAccount){
+
         LoadPanel.setVisible(false);
         AdLoginJP.setVisible(false);
         userMenu.SetNCRE(this);
-        userMenu.SetUserAP(userAccount);
-        userMenu.UserMenuUpdate();
+        userMenu.Initialize(userAccount);
         UserMenuJP.setVisible(true);
     }
 
