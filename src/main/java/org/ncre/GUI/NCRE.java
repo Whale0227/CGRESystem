@@ -14,6 +14,7 @@ public class NCRE extends JFrame implements ActionListener {
     private Load load;
     private JPanel LoadPanel,AdLoginJP,UserMenuJP;
     private NCREService ncreService;
+//    private AdLoginTT adLogin;
     private AdLogin adLogin;
     private UserLogin userLogin;
 
@@ -39,7 +40,7 @@ public class NCRE extends JFrame implements ActionListener {
         /**
          * 管理员登录界面
          */
-        adLogin= new AdLogin(this,ncreService);
+        adLogin= new AdLogin(styles,ncreService,this);
 
         /**
          * 管理员登录成功后菜单
@@ -93,12 +94,11 @@ public class NCRE extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(Objects.equals(e.getActionCommand(), "ADLOGIN")){
-            // TODO 管理员登录界面
+            // 管理员登录界面
             adLogin.Init();
-
         }
         if(Objects.equals(e.getActionCommand(), "USERLOGIN")){
-            // TODO 用户登录界面
+            // 用户登录界面
             userLogin.Init();
         }
     }

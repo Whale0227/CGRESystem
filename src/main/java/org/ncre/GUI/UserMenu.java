@@ -61,7 +61,7 @@ public class UserMenu implements ActionListener {
         Menu4Item1 = new JMenuItem("退出登录");
         Menu4Item2 = new JMenuItem("注销账户");
         UserMenuAccountJP = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        UserMenuFirstJP = new JPanel();
+        UserMenuFirstJP = new JPanel(null);
         UserMenuReviseInfoJP = new JPanel();
         UserMenuSignUpJP = new JPanel();
         UserMenuAccountJL1 = new JLabel("账户：");
@@ -158,6 +158,7 @@ public class UserMenu implements ActionListener {
         PictureJP.add(Picture);
         this.SignUpJPInit();
         this.ReviseInfoJPInit();
+        this.FirstJPInit();
         return UserMenuJP;
     }
     public void SignUpJPInit(){
@@ -400,7 +401,15 @@ public class UserMenu implements ActionListener {
 
     }
     public void  FirstJPInit(){
-
+        JPanel FirstJP1 = new JPanel();
+        FirstJP1.setBounds(0,0,1200,660);
+        FirstJP1.setLayout(null);
+        JLabel jLabel = new JLabel();
+        Icon FirstIcon = new ImageIcon("src\\main\\resources\\Pictures\\First.png");
+        jLabel.setIcon(FirstIcon);
+        jLabel.setBounds(0,-40,1200,660);
+        FirstJP1.add(jLabel);
+        UserMenuFirstJP.add(FirstJP1);
     }
     public void FirstJP(){
         UserMenuFirstJP.setVisible(true);

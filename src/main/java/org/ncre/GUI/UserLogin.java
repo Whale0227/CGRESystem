@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-@Component
 public class UserLogin extends JFrame implements ActionListener{
     private JButton LoginJB1, LoginJB2, LoginJB3;  //按钮
     private JButton RegisterJB1, RegisterJB2,RegisterJB3;  //按钮
@@ -198,7 +197,7 @@ public class UserLogin extends JFrame implements ActionListener{
 
 
     }
-    public UserAccount Init(){
+    public void Init(){
         LoginClear();
         RegisterClear();
         this.setLocationRelativeTo(null);//在屏幕中间显示(居中显示)
@@ -208,7 +207,6 @@ public class UserLogin extends JFrame implements ActionListener{
         RegisterJP.setVisible(false);
         this.setVisible(true);  //设置可见
         this.setResizable(false);   //设置不可拉伸大小
-        return userAccount;
     }
 
     private void Login(){
