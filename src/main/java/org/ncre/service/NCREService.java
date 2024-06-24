@@ -12,6 +12,6 @@ public interface NCREService {
     UserInfo GetUserInfoByAccount(String account);
     UserAccount GetUserAPByAccount(String account);
     AdministratorAccount GetADAccountByAccount(String account);
-    void SaveUserAcPw(UserAccount userAccount);
-    void SaveUserInfo(UserInfo userInfo);
+    boolean SaveUserAcPw(UserAccount userAccount);
+    boolean SaveUserInfo(UserInfo userInfo);
 }

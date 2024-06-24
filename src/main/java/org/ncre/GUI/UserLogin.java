@@ -252,21 +252,16 @@ public class UserLogin extends JFrame implements ActionListener{
             RegisterJPF1.setText("");
             RegisterJPF2.setText("");
         }
-        else{
-            String Taccount = RegisterJTF.getText();
-            String Tpassword = RegisterJPF1.getText();
-            UserAccount TuserAccount = LoginCGERService.GetUserAPByAccount(Taccount);
-            if(TuserAccount!=null){
-                JOptionPane.showMessageDialog(null, "该账号已存在，请重新输入！","消息提示",JOptionPane.WARNING_MESSAGE);
-                RegisterClear();
-            }else{
-                UserAccount userAccount = new UserAccount();
-                userAccount.setAccount(Taccount);
-                userAccount.setPassword(Tpassword);
-                LoginCGERService.SaveUserAcPw(userAccount);
-                JOptionPane.showMessageDialog(null, "注册成功！","消息提示",JOptionPane.WARNING_MESSAGE);
+        else {
+            UserAccount userAccount = new UserAccount();
+            userAccount.setAccount(RegisterJTF.getText());
+            userAccount.setPassword(RegisterJPF1.getText());
+            if (LoginCGERService.SaveUserAcPw(userAccount)) {
+                JOptionPane.showMessageDialog(null, "注册成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
                 this.RegisterClear();
                 this.ReturnLogin();
+            } else {
+                RegisterClear();
             }
         }
     }

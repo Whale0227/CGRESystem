@@ -322,7 +322,6 @@ public class UserMenu implements ActionListener {
 
         UserMenuSignUpJP.add(SignUpButtonSignupJP);
     }
-
     public void ReviseInfoJPInit(){
         ReviseInfoGender.addItem("男");
         ReviseInfoGender.addItem("女");
@@ -447,7 +446,6 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(false);
     }
     public void SignUpJP(){
-        UserMenuUpdate();
         if(user.getUserInfo() != null){
             if(user.getUserInfo().getName() != null){
                 SignUpNameJTF.setText(user.getUserInfo().getName());
@@ -459,12 +457,7 @@ public class UserMenu implements ActionListener {
                     SignUpAgeJTF.setEnabled(false);
                 }
                 if(user.getUserInfo().getGender() != null) {
-                    if (Objects.equals(user.getUserInfo().getGender(), "男")) {
-                        SignUpGender.setSelectedItem("男");
-                    } else {
-                        SignUpGender.setSelectedItem("女");
-                    }
-                    SignUpGender.setEnabled(false);
+                    SignUpGender.setSelectedItem(user.getUserInfo().getGender());
                 }
                 if(user.getUserInfo().getSchoolid()!=null){
                     SignUpSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
@@ -478,9 +471,11 @@ public class UserMenu implements ActionListener {
                     SignUpSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
                     SignUpSchoolJTF.setEnabled(false);
                 }
+                if(user.getUserInfo().getRank() != null){
+                    SignUpRank.setSelectedItem(user.getUserInfo().getRank());
+                    SignUpRank.setEnabled(false);
+                }
             }
-
-
         }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(true);
@@ -498,6 +493,35 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(false);
     }
     public void ReviseInfoJP(){
+        if(user.getUserInfo() != null){
+            if(user.getUserInfo().getName() != null){
+                ReviseInfoNameJTF.setText(user.getUserInfo().getName());
+            }
+            if(user.getUserInfo().getGender() != null){
+                if(user.getUserInfo().getAge() != null){
+                    ReviseInfoAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
+                }
+                if(user.getUserInfo().getGender() != null) {
+                    if (Objects.equals(user.getUserInfo().getGender(), "男")) {
+                        ReviseInfoGender.setSelectedItem("男");
+                    } else {
+                        ReviseInfoGender.setSelectedItem("女");
+                    }
+                }
+                if(user.getUserInfo().getSchoolid()!=null){
+                    ReviseInfoSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
+                }
+                if(user.getUserInfo().getPhone()!=null){
+                    ReviseInfoPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
+                }
+                if(user.getUserInfo().getSchool()!=null){
+                    ReviseInfoSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
+                }if(user.getUserInfo().getRank()!=null){
+                    ReviseInfoRankJTF.setText(user.getUserInfo().getRank());
+                    ReviseInfoRankJTF.setEnabled(false);
+                }
+            }
+        }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(false);
         UserMenuFindInfoJP.setVisible(false);
@@ -508,9 +532,8 @@ public class UserMenu implements ActionListener {
     public void LogOffJP(){
         user.setAccount(null);
         user.setUserInfo(null);
-        SignUpClear();
+        SignUpJP();
         ncre.Load();
-
     }
     public void LogOutJP(){
         UserMenuFirstJP.setVisible(false);
@@ -521,22 +544,6 @@ public class UserMenu implements ActionListener {
         UserMenuLogOutJP.setVisible(true);
     }
 
-    public void SignUpClear(){
-        SignUpNameJTF.setText("");
-        SignUpNameJTF.setEnabled(true);
-        SignUpGender.setSelectedItem("-请选择-");
-        SignUpGender.setEnabled(true);
-        SignUpAgeJTF.setText("");
-        SignUpAgeJTF.setEnabled(true);
-        SignUpSchoolidJTF.setText("");
-        SignUpSchoolidJTF.setEnabled(true);
-        SignUpSchoolJTF.setText("");
-        SignUpSchoolJTF.setEnabled(true);
-        SignUpRank.setSelectedItem("-请选择-");
-        SignUpRank.setEnabled(true);
-        SignUpPhoneJTF.setText("");
-        SignUpPhoneJTF.setEnabled(true);
-    }
     public void SignUp(){
         if(Objects.equals(SignUpNameJTF.getText(), "") ||Objects.equals(SignUpAgeJTF.getText(), "") ||
                 Objects.equals(SignUpSchoolidJTF.getText(), "") ||Objects.equals(SignUpPhoneJTF.getText(), "") ||
@@ -548,25 +555,47 @@ public class UserMenu implements ActionListener {
                 JOptionPane.showMessageDialog(null, "请勿重复报名！","消息提示",JOptionPane.WARNING_MESSAGE);
             }
             else {
-                String TName = SignUpNameJTF.getText();
-                String TGender = (String) SignUpGender.getSelectedItem();
-                Integer TAge = Integer.valueOf(SignUpAgeJTF.getText());
-                String TSchoolid = SignUpSchoolidJTF.getText();
-                String TSchool = SignUpSchoolJTF.getText();
-                String TRank = (String) SignUpRank.getSelectedItem();
-                String TPhone = SignUpPhoneJTF.getText();
                 UserInfo userInfo = new UserInfo();
                 userInfo.setAccount(user.getAccount().getAccount());
-                userInfo.setName(TName);
-                userInfo.setGender(TGender);
-                userInfo.setAge(TAge);
-                userInfo.setSchoolid(TSchoolid);
-                userInfo.setSchool(TSchool);
-                userInfo.setRank(TRank);
-                userInfo.setPhone(TPhone);
+                userInfo.setName(SignUpNameJTF.getText());
+                userInfo.setGender((String) SignUpGender.getSelectedItem());
+                userInfo.setAge(Integer.valueOf(SignUpAgeJTF.getText()));
+                userInfo.setSchoolid(SignUpSchoolidJTF.getText());
+                userInfo.setSchool(SignUpSchoolJTF.getText());
+                userInfo.setRank((String) SignUpRank.getSelectedItem());
+                userInfo.setPhone(SignUpPhoneJTF.getText());
                 ncreService.SaveUserInfo(userInfo);
                 JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
-                SignUpClear();
+                SignUpJP();
+            }
+        }
+    }
+
+    public void Revise(){
+        if(Objects.equals(ReviseInfoNameJTF.getText(), "") ||Objects.equals(ReviseInfoAgeJTF.getText(), "") ||
+                Objects.equals(ReviseInfoSchoolidJTF.getText(), "") ||Objects.equals(ReviseInfoPhoneJTF.getText(), "") ||
+                Objects.equals(ReviseInfoSchoolJTF.getText(), "")){
+            JOptionPane.showMessageDialog(null, "请将信息填写完整！","消息提示",JOptionPane.WARNING_MESSAGE);
+        }else {
+            String TName = ReviseInfoNameJTF.getText();
+            String TGender = (String) ReviseInfoGender.getSelectedItem();
+            Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
+            String TSchoolid = ReviseInfoSchoolidJTF.getText();
+            String TSchool = ReviseInfoSchoolJTF.getText();
+            String TRank = ReviseInfoRankJTF.getText();
+            String TPhone = ReviseInfoPhoneJTF.getText();
+            UserInfo userInfo = new UserInfo();
+            userInfo.setAccount(user.getAccount().getAccount());
+            userInfo.setName(TName);
+            userInfo.setGender(TGender);
+            userInfo.setAge(TAge);
+            userInfo.setSchoolid(TSchoolid);
+            userInfo.setSchool(TSchool);
+            userInfo.setRank(TRank);
+            userInfo.setPhone(TPhone);
+            if(ncreService.SaveUserInfo(userInfo)){
+                JOptionPane.showMessageDialog(null, "修改成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                ReviseInfoJP();
             }
         }
     }
@@ -595,7 +624,13 @@ public class UserMenu implements ActionListener {
             this.SignUp();
         }
         else if(Objects.equals(e.getActionCommand(), "SignUpClear")){
-            this.SignUpClear();
+            this.SignUpJP();
+        }
+        else if(Objects.equals(e.getActionCommand(),"Revise")){
+            this.Revise();
+        }
+        else if(Objects.equals(e.getActionCommand(),"ReviseClear")){
+            this.ReviseInfoJP();
         }
 
     }
