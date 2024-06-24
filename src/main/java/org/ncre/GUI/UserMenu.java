@@ -32,9 +32,19 @@ public class UserMenu implements ActionListener {
     private JButton SignUpButtonSignup,SignUpButtonClear;
     private JPanel SignUpButtonSignupJP;
     private JPanel SignUpInfoJP;
-    private JPanel SignUpInfoJPOverAll,SignUpInfoJP1,SignUpInfoJP2,SignUpInfoJP3,SignUpInfoJP4,SignUpInfoJP5,SignUpInfoJP6,SignUpInfoJP7,SignUpInfoJP8;
+    private JPanel SignUpInfoJPOverAll,SignUpInfoJP1,SignUpInfoJP2,SignUpInfoJP3,SignUpInfoJP4,SignUpInfoJP5,SignUpInfoJP6,SignUpInfoJP7;
     private JLabel SignUpNameJL,SignUpGenderJL,SignUpAgeJL,SignUpSchoolidJL,SignUpPhoneJL,SignUpRankJL,SignUpSchoolJL;
     private JTextField SignUpNameJTF,SignUpAgeJTF,SignUpSchoolidJTF,SignUpPhoneJTF,SignUpSchoolJTF;
+    private JLabel ReviseInfoNameJL,ReviseInfoGenderJL,ReviseInfoAgeJL,ReviseInfoSchoolidJL,
+            ReviseInfoPhoneJL,ReviseInfoRankJL,ReviseInfoSchoolJL;
+    private JTextField ReviseInfoNameJTF,ReviseInfoAgeJTF,ReviseInfoSchoolidJTF,
+            ReviseInfoPhoneJTF,ReviseInfoRankJTF,ReviseInfoSchoolJTF;
+   private JButton ReviseInfoButtonRevise,ReviseInfoButtonClear;
+
+    private JPanel ReviseInfoButtonJP,ReviseInfoJP,ReviseInfoJPOverAll,ReviseInfoJP1,
+            ReviseInfoJP2,ReviseInfoJP3,ReviseInfoJP4,ReviseInfoJP5,ReviseInfoJP6,ReviseInfoJP7;
+    private JComboBox<String> ReviseInfoGender = new JComboBox<>();
+
     private JComboBox<String> SignUpGender = new JComboBox<>();
     private JComboBox<String> SignUpRank = new JComboBox<>();
     UserMenu(Styles styles,NCREService ncreService){
@@ -96,6 +106,7 @@ public class UserMenu implements ActionListener {
         UserMenuJP.setLayout(null);
         PictureJP.setLayout(null);
         UserMenuSignUpJP.setLayout(null);
+        UserMenuReviseInfoJP.setLayout(null);
 
         PictureJP.setBounds(0,0,1200,70);
         Picture.setBounds(0,0,400,70);
@@ -184,6 +195,7 @@ public class UserMenu implements ActionListener {
 
         PictureJP.add(Picture);
         this.SignUpJPInit();
+        this.ReviseInfoJPInit();
         return UserMenuJP;
     }
     public void SignUpJPInit(){
@@ -205,7 +217,6 @@ public class UserMenu implements ActionListener {
         SignUpInfoJP5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         SignUpInfoJP6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         SignUpInfoJP7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        SignUpInfoJP8 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         SignUpNameJL = new JLabel("姓    名：");
         SignUpGenderJL = new JLabel("性    别：");
@@ -258,10 +269,10 @@ public class UserMenu implements ActionListener {
         SignUpInfoJP7.setBounds(0,490,500,70);
 
 
-        JScrollBar verticalScrollBar = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0,20);
-        verticalScrollBar.setBounds(720,0,20,450);
+        JScrollBar SignUpInfoScrollBar = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0,20);
+        SignUpInfoScrollBar.setBounds(720,0,20,450);
         // 监听滚动条的数值变化事件
-        verticalScrollBar.addAdjustmentListener(e -> {
+        SignUpInfoScrollBar.addAdjustmentListener(e -> {
             int value = e.getValue();
             SignUpInfoJPOverAll.setLocation(SignUpInfoJPOverAll.getX(), -value * 20); // 以标签高度为单位滚动
         });
@@ -269,7 +280,7 @@ public class UserMenu implements ActionListener {
 
 
         SignUpInfoJP.add(SignUpInfoJPOverAll);
-        SignUpInfoJP.add(verticalScrollBar);
+        SignUpInfoJP.add(SignUpInfoScrollBar);
 
         SignUpInfoJPOverAll.add(SignUpInfoJP1);
         SignUpInfoJPOverAll.add(SignUpInfoJP2);
@@ -278,7 +289,6 @@ public class UserMenu implements ActionListener {
         SignUpInfoJPOverAll.add(SignUpInfoJP5);
         SignUpInfoJPOverAll.add(SignUpInfoJP6);
         SignUpInfoJPOverAll.add(SignUpInfoJP7);
-        SignUpInfoJPOverAll.add(SignUpInfoJP8);
 
         SignUpInfoJP1.add(SignUpNameJL);
         SignUpInfoJP1.add(SignUpNameJTF);
@@ -311,6 +321,122 @@ public class UserMenu implements ActionListener {
         SignUpButtonSignupJP.setLayout(SignUpButtonGap);
 
         UserMenuSignUpJP.add(SignUpButtonSignupJP);
+    }
+
+    public void ReviseInfoJPInit(){
+        ReviseInfoGender.addItem("男");
+        ReviseInfoGender.addItem("女");
+
+        ReviseInfoJP1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP5 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        ReviseInfoJP7 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        ReviseInfoNameJL = new JLabel("姓    名：");
+        ReviseInfoGenderJL = new JLabel("性    别：");
+        ReviseInfoAgeJL = new JLabel("年    龄：");
+        ReviseInfoSchoolidJL = new JLabel("学    号：");
+        ReviseInfoPhoneJL = new JLabel("电    话：");
+        ReviseInfoRankJL = new JLabel("考试等级：");
+        ReviseInfoSchoolJL = new JLabel("学    校：");
+        ReviseInfoButtonRevise = new JButton("修改");
+        ReviseInfoButtonClear = new JButton("复原");
+
+        ReviseInfoNameJTF = new JTextField(20);
+        ReviseInfoAgeJTF = new JTextField(20);
+        ReviseInfoSchoolidJTF = new JTextField(20);
+        ReviseInfoPhoneJTF = new JTextField(20);
+        ReviseInfoSchoolJTF = new JTextField(20);
+        ReviseInfoRankJTF = new JTextField(20);
+
+        ReviseInfoNameJL.setFont(styles.SmallJLFont);
+        ReviseInfoGenderJL.setFont(styles.SmallJLFont);
+        ReviseInfoAgeJL.setFont(styles.SmallJLFont);
+        ReviseInfoSchoolidJL.setFont(styles.SmallJLFont);
+        ReviseInfoPhoneJL.setFont(styles.SmallJLFont);
+        ReviseInfoRankJL.setFont(styles.SmallJLFont);
+        ReviseInfoSchoolJL.setFont(styles.SmallJLFont);
+
+
+        ReviseInfoNameJTF.setFont(styles.SmallJLFont);
+        ReviseInfoGender.setFont(styles.SmallJLFont);
+        ReviseInfoRankJTF.setFont(styles.SmallJLFont);
+        ReviseInfoAgeJTF.setFont(styles.SmallJLFont);
+        ReviseInfoSchoolidJTF.setFont(styles.SmallJLFont);
+        ReviseInfoPhoneJTF.setFont(styles.SmallJLFont);
+        ReviseInfoSchoolJTF.setFont(styles.SmallJLFont);
+        ReviseInfoButtonRevise.setFont(styles.SmallJLFont);
+        ReviseInfoButtonClear.setFont(styles.SmallJLFont);
+
+        ReviseInfoButtonJP = new JPanel();
+        ReviseInfoJP = new JPanel(null);
+        ReviseInfoJPOverAll = new JPanel(null);
+
+        ReviseInfoButtonJP.setBounds(300,500,600,180);
+        ReviseInfoJP.setBounds(240,0,740,450);
+        ReviseInfoJPOverAll.setBounds(200,0,500,800);
+        ReviseInfoJP1.setBounds(0,70,500,70);
+        ReviseInfoJP2.setBounds(0,140,500,70);
+        ReviseInfoJP3.setBounds(0,210,500,70);
+        ReviseInfoJP4.setBounds(0,280,500,70);
+        ReviseInfoJP5.setBounds(0,350,500,70);
+        ReviseInfoJP6.setBounds(0,420,500,70);
+        ReviseInfoJP7.setBounds(0,490,500,70);
+
+        JScrollBar ReviseInfoScrollBar = new JScrollBar(JScrollBar.VERTICAL, 0, 1, 0,20);
+        ReviseInfoScrollBar.setBounds(720,0,20,450);
+        // 监听滚动条的数值变化事件
+        ReviseInfoScrollBar.addAdjustmentListener(e -> {
+            int value = e.getValue();
+            ReviseInfoJPOverAll.setLocation(ReviseInfoJPOverAll.getX(), -value * 20); // 以标签高度为单位滚动
+        });
+
+
+        ReviseInfoJP.add(ReviseInfoJPOverAll);
+        ReviseInfoJP.add(ReviseInfoScrollBar);
+
+        ReviseInfoJPOverAll.add(ReviseInfoJP1);
+        ReviseInfoJPOverAll.add(ReviseInfoJP2);
+        ReviseInfoJPOverAll.add(ReviseInfoJP3);
+        ReviseInfoJPOverAll.add(ReviseInfoJP4);
+        ReviseInfoJPOverAll.add(ReviseInfoJP5);
+        ReviseInfoJPOverAll.add(ReviseInfoJP6);
+        ReviseInfoJPOverAll.add(ReviseInfoJP7);
+
+        ReviseInfoJP1.add(ReviseInfoNameJL);
+        ReviseInfoJP1.add(ReviseInfoNameJTF);
+        ReviseInfoJP2.add(ReviseInfoGenderJL);
+        ReviseInfoJP2.add(ReviseInfoGender);
+        ReviseInfoJP3.add(ReviseInfoAgeJL);
+        ReviseInfoJP3.add(ReviseInfoAgeJTF);
+        ReviseInfoJP4.add(ReviseInfoSchoolidJL);
+        ReviseInfoJP4.add(ReviseInfoSchoolidJTF);
+        ReviseInfoJP5.add(ReviseInfoPhoneJL);
+        ReviseInfoJP5.add(ReviseInfoPhoneJTF);
+        ReviseInfoJP6.add(ReviseInfoRankJL);
+        ReviseInfoJP6.add(ReviseInfoRankJTF);
+        ReviseInfoJP7.add(ReviseInfoSchoolJL);
+        ReviseInfoJP7.add(ReviseInfoSchoolJTF);
+
+
+        ReviseInfoButtonRevise.addActionListener(this);
+        ReviseInfoButtonClear.addActionListener(this);
+        ReviseInfoButtonRevise.setActionCommand("Revise");
+        ReviseInfoButtonClear.setActionCommand("ReviseClear");
+
+
+        UserMenuReviseInfoJP.add(ReviseInfoJP);
+        ReviseInfoButtonJP.add(ReviseInfoButtonRevise);
+        ReviseInfoButtonJP.add(ReviseInfoButtonClear);
+
+        FlowLayout  SignUpButtonGap=new FlowLayout();
+        SignUpButtonGap.setHgap(120);//水平间距
+        ReviseInfoButtonJP.setLayout(SignUpButtonGap);
+        UserMenuReviseInfoJP.add(ReviseInfoButtonJP);
+
     }
     public void First(){
         UserMenuFirstJP.setVisible(true);

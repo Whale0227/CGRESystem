@@ -11,10 +11,10 @@ public class App1 {
         AnnotationConfigApplicationContext ssfb = new AnnotationConfigApplicationContext(SpringConfig.class);
         NCREService ncreService = ssfb.getBean(NCREService.class);
         NCRE ncre = new NCRE(ncreService);
-//        UserAccount userAccount = new UserAccount();
-//        userAccount.setAccount("1");
-//        userAccount.setPassword("1");
-//        ncre.UserMenu(userAccount);
+        UserAccount userAccount = new UserAccount();
+        userAccount.setAccount("1");
+        userAccount.setPassword("1");
+        ncre.UserMenu(userAccount);
 
     }
 }
