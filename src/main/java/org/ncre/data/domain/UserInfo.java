@@ -10,6 +10,14 @@ public class UserInfo {
     private String phone;
     private String school;
 
+    public String getExamerank() {
+        return examerank;
+    }
+
+    public void setExamerank(String examerank) {
+        this.examerank = examerank;
+    }
+
     private String examerank;
 
     @Override
@@ -91,11 +99,5 @@ public class UserInfo {
         this.school = school;
     }
 
-    public String getRank() {
-        return examerank;
-    }
 
-    public void setRank(String examerank) {
-        this.examerank = examerank;
-    }
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class NCREServiceImpl implements NCREService {
     @Autowired
@@ -49,14 +51,29 @@ public class NCREServiceImpl implements NCREService {
     }
     @Override
     public boolean SaveUserInfo(UserInfo userInfo) {
-        String regex = "1\\d{10}";//定义手机号规则
-        boolean flag = userInfo.getPhone().matches(regex);//判断功能
-        if (flag) {
-            userDao.UpadteAllInfoByAccount(userInfo);
+
+//            if ((!Objects.equals(ReviseInfoRankJTF.getText(), "") || !Objects.equals(ReviseInfoRankJTF.getText(), "无")) &&
+//                    (Objects.equals(SignUpNameJTF.getText(), "") || Objects.equals(SignUpAgeJTF.getText(), "") ||
+//                    Objects.equals(SignUpSchoolidJTF.getText(), "") || Objects.equals(SignUpPhoneJTF.getText(), "") ||
+//                    Objects.equals(SignUpSchoolJTF.getText(), "") || SignUpGender.getSelectedItem() == "-请选择-")
+//                    ) {
+//                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+        boolean FlagPhone = false;
+        if((userInfo.getExamerank()!=null&& !Objects.equals(userInfo.getExamerank(), "无"))&&
+                (Objects.equals(userInfo.getName(), "") || Objects.equals(userInfo.getGender(), "-请选择-") ||
+                        Objects.equals(userInfo.getPhone(), "") || Objects.equals(userInfo.getSchoolid(), "") ||
+                        Objects.equals(userInfo.getSchool(), ""))){
+            JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
         }else {
-            JOptionPane.showMessageDialog(null, "请填写正确的手机号！","消息提示",JOptionPane.WARNING_MESSAGE);
+            String regex = "1\\d{10}";//定义手机号规则
+            FlagPhone = userInfo.getPhone().matches(regex);//判断功能
+            if (FlagPhone) {
+                userDao.UpadteAllInfoByAccount(userInfo);
+            } else {
+                JOptionPane.showMessageDialog(null, "请填写正确的手机号！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        return flag;
+        return FlagPhone;
     }
     public void DeleteUserInfoAccountByAccount(UserAccount userAccount){
         userDao.DeleteUserInfoByAccount(userAccount);

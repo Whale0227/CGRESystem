@@ -14,18 +14,17 @@ import java.util.Objects;
 public class UserMenu implements ActionListener {
     private JPanel UserMenuJP;
     private JPanel PictureJP, UserMenuAccountJP,UserMenuBarJP,UserMenuFirstJP,
-            UserMenuSignUpJP,UserMenuReviseInfoJP,
-            UserMenuLogOffJP;
+            UserMenuSignUpJP,UserMenuReviseInfoJP;
 
     private JLabel Picture;
     private JLabel UserMenuAccountJL1,UserMenuAccountJL2;   // 展示登录账号
     private JMenuBar menuBar;// 下拉式菜单
     private JMenu menu1,menu2,menu3,menu4;  // 菜单栏选项
     private JMenuItem Menu1Item1,Menu2Item1,Menu3Item1, Menu4Item1,Menu4Item2;  //菜单栏下拉选项
-    private Icon icon;  // 资源图片
-    private Styles styles;  // 格式
+    private final Icon icon;  // 资源图片
+    private final Styles styles;  // 格式
     private User user;  // 用户信息
-    private NCREService ncreService;    // 服务器
+    private final NCREService ncreService;    // 服务器
     private NCRE ncre;  // 主面板
     private JButton SignUpButtonSignup,SignUpButtonClear;
     private JPanel SignUpButtonSignupJP;
@@ -42,7 +41,6 @@ public class UserMenu implements ActionListener {
     private JPanel ReviseInfoButtonJP,ReviseInfoJP,ReviseInfoJPOverAll,ReviseInfoJP1,
             ReviseInfoJP2,ReviseInfoJP3,ReviseInfoJP4,ReviseInfoJP5,ReviseInfoJP6,ReviseInfoJP7;
     private JComboBox<String> ReviseInfoGender = new JComboBox<>();
-
     private JComboBox<String> SignUpGender = new JComboBox<>();
     private JComboBox<String> SignUpRank = new JComboBox<>();
     UserMenu(Styles styles,NCREService ncreService){
@@ -64,11 +62,7 @@ public class UserMenu implements ActionListener {
         Menu4Item2 = new JMenuItem("注销账户");
         UserMenuAccountJP = new JPanel(new FlowLayout(FlowLayout.LEFT));
         UserMenuFirstJP = new JPanel();
-
         UserMenuReviseInfoJP = new JPanel();
-        UserMenuLogOffJP = new JPanel();
-
-
         UserMenuSignUpJP = new JPanel();
         UserMenuAccountJL1 = new JLabel("账户：");
         UserMenuAccountJL1.setForeground(Color.white);
@@ -83,12 +77,11 @@ public class UserMenu implements ActionListener {
     public void Initialize(UserAccount userAccount){
         user.setAccount(userAccount);
         UserInfoUpdate();
-        First();
+        FirstJP();
     }
     public void SetNCRE(NCRE ncre){
         this.ncre = ncre;
     }
-
     public JPanel Init(){
         UserInfoUpdate();
         UserMenuJP.setBounds(0,0,styles.MaxWidth,styles.MaxHeight);
@@ -104,7 +97,6 @@ public class UserMenu implements ActionListener {
         UserMenuFirstJP.setBounds(0,140,1200,660);
         UserMenuSignUpJP.setBounds(0,140,1200,660);
         UserMenuReviseInfoJP.setBounds(0,140,1200,660);
-        UserMenuLogOffJP.setBounds(0,140,1200,660);
 
         UserMenuAccountJL1.setFont(styles.SmallJLFont);
         UserMenuAccountJL2.setFont(styles.SmallJLFont);
@@ -145,7 +137,6 @@ public class UserMenu implements ActionListener {
         UserMenuFirstJP.setBackground(Color.pink);
         UserMenuSignUpJP.setBackground(Color.green);
         UserMenuReviseInfoJP.setBackground(Color.magenta);
-        UserMenuLogOffJP.setBackground(Color.cyan);
 
         Picture.setIcon(icon);
         UserMenuJP.add(PictureJP);
@@ -156,12 +147,10 @@ public class UserMenu implements ActionListener {
         UserMenuJP.add(UserMenuFirstJP);
         UserMenuJP.add(UserMenuSignUpJP);
         UserMenuJP.add(UserMenuReviseInfoJP);
-        UserMenuJP.add(UserMenuLogOffJP);
 
         UserMenuFirstJP.setVisible(true);
         UserMenuSignUpJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
-        UserMenuLogOffJP.setVisible(false);
 
         UserMenuAccountJP.add(UserMenuAccountJL1);
         UserMenuAccountJP.add(UserMenuAccountJL2);
@@ -175,7 +164,6 @@ public class UserMenu implements ActionListener {
         SignUpGender.addItem("-请选择-");
         SignUpGender.addItem("男");
         SignUpGender.addItem("女");
-
 
         SignUpRank.addItem("-请选择-");
         SignUpRank.addItem("一级");
@@ -411,106 +399,130 @@ public class UserMenu implements ActionListener {
         UserMenuReviseInfoJP.add(ReviseInfoButtonJP);
 
     }
-    public void First(){
+    public void  FirstJPInit(){
+
+    }
+    public void FirstJP(){
         UserMenuFirstJP.setVisible(true);
         UserMenuSignUpJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
-        UserMenuLogOffJP.setVisible(false);
     }
     private void UserInfoUpdate(){
         try {
             user.setUserInfo(ncreService.GetUserInfoByAccount(user.getAccount().getAccount()));
             UserMenuAccountJL2.setText(user.getAccount().getAccount());
+            SignUpJPUpdate();
+            ReviseInfoJPUpdate();
         }catch (NullPointerException e){
-
+        }
+    }
+    private void SignUpJPUpdate(){
+        if(user.getUserInfo() != null) {
+            if (user.getUserInfo().getName() != null) {
+                SignUpNameJTF.setText(user.getUserInfo().getName());
+                SignUpNameJTF.setEnabled(false);
+            }
+            if (user.getUserInfo().getAge() != null) {
+                SignUpAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
+                SignUpAgeJTF.setEnabled(false);
+            }
+            if (user.getUserInfo().getGender() != null) {
+                SignUpGender.setSelectedItem(user.getUserInfo().getGender());
+                SignUpGender.setEnabled(false);
+            }
+            if (user.getUserInfo().getSchoolid() != null) {
+                SignUpSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
+                SignUpSchoolidJTF.setEnabled(false);
+            }
+            if (user.getUserInfo().getPhone() != null) {
+                SignUpPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
+                SignUpPhoneJTF.setEnabled(false);
+            }
+            if (user.getUserInfo().getSchool() != null) {
+                SignUpSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
+                SignUpSchoolJTF.setEnabled(false);
+            }
+            if (user.getUserInfo().getExamerank() != null) {
+                if (Objects.equals(user.getUserInfo().getExamerank(), "无")) {
+                } else {
+                    SignUpRank.setSelectedItem(user.getUserInfo().getExamerank());
+                    SignUpRank.setEnabled(false);
+                }
+            }
+        }else {
+            SignUpNameJTF.setEnabled(true);
+            SignUpAgeJTF.setEnabled(true);
+            SignUpGender.setEnabled(true);
+            SignUpSchoolidJTF.setEnabled(true);
+            SignUpPhoneJTF.setEnabled(true);
+            SignUpSchoolJTF.setEnabled(true);
+            SignUpRank.setEnabled(true);
+            SignUpNameJTF.setText("");
+            SignUpAgeJTF.setText("");
+            SignUpGender.setSelectedItem("-请选择-");
+            SignUpSchoolidJTF.setText("");
+            SignUpPhoneJTF.setText("");
+            SignUpSchoolJTF.setText("");
+            SignUpRank.setSelectedItem("-请选择-");
         }
     }
     public void SignUpJP(){
         UserInfoUpdate();
-        if(user.getUserInfo() != null){
-            if(user.getUserInfo().getName() != null){
-                SignUpNameJTF.setText(user.getUserInfo().getName());
-                SignUpNameJTF.setEnabled(false);
-            }
-            if(user.getUserInfo().getGender() != null){
-                if(user.getUserInfo().getAge() != null){
-                    SignUpAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
-                    SignUpAgeJTF.setEnabled(false);
-                }
-                if(user.getUserInfo().getGender() != null) {
-                    SignUpGender.setSelectedItem(user.getUserInfo().getGender());
-                    SignUpGender.setEnabled(false);
-                }
-                if(user.getUserInfo().getSchoolid()!=null){
-                    SignUpSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
-                    SignUpSchoolidJTF.setEnabled(false);
-                }
-                if(user.getUserInfo().getPhone()!=null){
-                    SignUpPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
-                    SignUpPhoneJTF.setEnabled(false);
-                }
-                if(user.getUserInfo().getSchool()!=null){
-                    SignUpSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
-                    SignUpSchoolJTF.setEnabled(false);
-                }
-                if(user.getUserInfo().getRank() != null) {
-                    if (Objects.equals(user.getUserInfo().getRank(), "无")) {
-                    } else {
-                        SignUpRank.setSelectedItem(user.getUserInfo().getRank());
-                        SignUpRank.setEnabled(false);
-                    }
-                }
-            }
-        }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(true);
         UserMenuReviseInfoJP.setVisible(false);
-        UserMenuLogOffJP.setVisible(false);
     }
     public void FindInfoJP(){
         UserInfoUpdate();
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(false);
-        UserMenuLogOffJP.setVisible(false);
+    }
+    private void ReviseInfoJPUpdate(){
+        if(user.getUserInfo() != null) {
+            if (user.getUserInfo().getName() != null) {
+                ReviseInfoNameJTF.setText(user.getUserInfo().getName());
+            }
+            if (user.getUserInfo().getAge() != null) {
+                ReviseInfoAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
+            }
+            if (user.getUserInfo().getGender() != null) {
+                ReviseInfoGender.setSelectedItem(user.getUserInfo().getGender());
+            } else {
+                ReviseInfoGender.setSelectedItem("-请选择-");
+            }
+            if (user.getUserInfo().getSchoolid() != null) {
+                ReviseInfoSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
+            }
+            if (user.getUserInfo().getPhone() != null) {
+                ReviseInfoPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
+            }
+            if (user.getUserInfo().getSchool() != null) {
+                ReviseInfoSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
+            }
+            if (user.getUserInfo().getExamerank() != null) {
+                ReviseInfoRankJTF.setText(user.getUserInfo().getExamerank());
+                ReviseInfoRankJTF.setEnabled(false);
+            } else {
+                ReviseInfoRankJTF.setText("无");
+                ReviseInfoRankJTF.setEnabled(false);
+            }
+        }else{
+            ReviseInfoNameJTF.setText("");
+            ReviseInfoAgeJTF.setText("");
+            ReviseInfoGender.setSelectedItem("-请选择-");
+            ReviseInfoSchoolidJTF.setText("");
+            ReviseInfoPhoneJTF.setText("");
+            ReviseInfoSchoolJTF.setText("");
+            ReviseInfoRankJTF.setText("无");
+            ReviseInfoRankJTF.setEnabled(false);
+        }
     }
     public void ReviseInfoJP(){
         UserInfoUpdate();
-        if(user.getUserInfo() != null){
-            if(user.getUserInfo().getName() != null){
-                ReviseInfoNameJTF.setText(user.getUserInfo().getName());
-            }
-            if(user.getUserInfo().getGender() != null){
-                if(user.getUserInfo().getAge() != null){
-                    ReviseInfoAgeJTF.setText(String.valueOf(user.getUserInfo().getAge()));
-                }
-                if(user.getUserInfo().getGender() != null) {
-                    ReviseInfoGender.setSelectedItem(user.getUserInfo().getGender());
-                }else{
-                    ReviseInfoGender.setSelectedItem("-请选择-");
-                }
-                if(user.getUserInfo().getSchoolid()!=null){
-                    ReviseInfoSchoolidJTF.setText(String.valueOf(user.getUserInfo().getSchoolid()));
-                }
-                if(user.getUserInfo().getPhone()!=null){
-                    ReviseInfoPhoneJTF.setText(String.valueOf(user.getUserInfo().getPhone()));
-                }
-                if(user.getUserInfo().getSchool()!=null){
-                    ReviseInfoSchoolJTF.setText(String.valueOf(user.getUserInfo().getSchool()));
-                }
-                if(user.getUserInfo().getRank()!=null){
-                    ReviseInfoRankJTF.setText(user.getUserInfo().getRank());
-                    ReviseInfoRankJTF.setEnabled(false);
-                }else{
-                    ReviseInfoRankJTF.setText("无");
-                    ReviseInfoRankJTF.setEnabled(false);
-                }
-            }
-        }
         UserMenuFirstJP.setVisible(false);
         UserMenuSignUpJP.setVisible(false);
         UserMenuReviseInfoJP.setVisible(true);
-        UserMenuLogOffJP.setVisible(false);
     }
     public void LogOffJP(){
         user.setAccount(null);
@@ -537,7 +549,7 @@ public class UserMenu implements ActionListener {
                     SignUpRank.getSelectedItem() == "-请选择-") {
                 JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
             } else {
-                if (user.getUserInfo() != null && (user.getUserInfo().getRank() != null) && !Objects.equals(user.getUserInfo().getRank(), "无")) {
+                if (user.getUserInfo() != null && (user.getUserInfo().getExamerank() != null) && !Objects.equals(user.getUserInfo().getExamerank(), "无")) {
                     JOptionPane.showMessageDialog(null, "请勿重复报名！", "消息提示", JOptionPane.WARNING_MESSAGE);
                 } else {
                     UserInfo userInfo = new UserInfo();
@@ -547,29 +559,21 @@ public class UserMenu implements ActionListener {
                     userInfo.setAge(Integer.valueOf(SignUpAgeJTF.getText()));
                     userInfo.setSchoolid(SignUpSchoolidJTF.getText());
                     userInfo.setSchool(SignUpSchoolJTF.getText());
-                    userInfo.setRank((String) SignUpRank.getSelectedItem());
+                    userInfo.setExamerank((String) SignUpRank.getSelectedItem());
                     userInfo.setPhone(SignUpPhoneJTF.getText());
-                    ncreService.SaveUserInfo(userInfo);
-                    JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
-                    SignUpJP();
+                    if(ncreService.SaveUserInfo(userInfo)) {
+                        JOptionPane.showMessageDialog(null, "报名成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                        SignUpJP();
+                    }
                 }
             }
-
         }
     }
-    public void Revise(){
-        int userOption =  JOptionPane.showConfirmDialog(null,"您修改信息吗？","提示",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);	//确认对话框
-        //如果用户选择的是OK
-        if (userOption == JOptionPane.OK_OPTION) {
-            if (SignUpRank.getSelectedItem() != "无"&&(Objects.equals(SignUpNameJTF.getText(), "") || Objects.equals(SignUpAgeJTF.getText(), "") ||
-                    Objects.equals(SignUpSchoolidJTF.getText(), "") || Objects.equals(SignUpPhoneJTF.getText(), "") ||
-                    Objects.equals(SignUpSchoolJTF.getText(), "") || SignUpGender.getSelectedItem() == "-请选择-")
-                    ) {
-                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
-            }
+    public void Revise() {
+        try {
+            Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
             String TName = ReviseInfoNameJTF.getText();
             String TGender = (String) ReviseInfoGender.getSelectedItem();
-            Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
             String TSchoolid = ReviseInfoSchoolidJTF.getText();
             String TSchool = ReviseInfoSchoolJTF.getText();
             String TRank = ReviseInfoRankJTF.getText();
@@ -581,18 +585,20 @@ public class UserMenu implements ActionListener {
             userInfo.setAge(TAge);
             userInfo.setSchoolid(TSchoolid);
             userInfo.setSchool(TSchool);
-            userInfo.setRank(TRank);
+            userInfo.setExamerank(TRank);
             userInfo.setPhone(TPhone);
-            if(ncreService.SaveUserInfo(userInfo)){
+            if (ncreService.SaveUserInfo(userInfo)) {
                 JOptionPane.showMessageDialog(null, "修改成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
                 ReviseInfoJP();
             }
+        }catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
         }
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(Objects.equals(e.getActionCommand(), "FirstJP")){
-            this.First();
+            this.FirstJP();
         }
         else if(Objects.equals(e.getActionCommand(), "SignUpJP")){
             this.SignUpJP();
