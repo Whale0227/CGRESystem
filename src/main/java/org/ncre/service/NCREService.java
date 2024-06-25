@@ -1,12 +1,15 @@
 package org.ncre.service;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.ncre.data.domain.AdministratorAccount;
 import org.ncre.data.domain.User;
 import org.ncre.data.domain.UserAccount;
 import org.ncre.data.domain.UserInfo;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
-
+@Transactional // 事务传播行为
 public interface NCREService {
     List<AdministratorAccount> GetAllAdministratorAccount();
     UserInfo GetUserInfoByAccount(String account);
@@ -15,6 +18,7 @@ public interface NCREService {
     boolean SaveUserAcPw(UserAccount userAccount);
     boolean SaveUserInfo(UserInfo userInfo);
     void DeleteUserInfoAccountByAccount(UserAccount userAccount);
+
     boolean AddUserInfos(List<User> users);
     boolean UpdateUserInfo(User user);
 }

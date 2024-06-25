@@ -1,4 +1,5 @@
 package org.ncre.GUI;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.ncre.data.domain.User;
 import org.ncre.data.domain.UserAccount;
 import org.ncre.data.domain.UserInfo;
@@ -10,6 +11,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -341,28 +343,24 @@ public class AdMenu implements ActionListener {
     }
     private void FindUserInfoJPInit(){}
     private void AddUserInfoJP(){
-        users = new ArrayList<>();
         AddUserInfoJP.setVisible(true);
         DeleteUserInfoJP.setVisible(false);
         ReviseUserInfoJP.setVisible(false);
         FindUserInfoJP.setVisible(false);
     }
     private void DeleteUserInfoJP(){
-        users = new ArrayList<>();
         AddUserInfoJP.setVisible(false);
         DeleteUserInfoJP.setVisible(true);
         ReviseUserInfoJP.setVisible(false);
         FindUserInfoJP.setVisible(false);
     }
     private void ReviseUserInfoJP(){
-        users = new ArrayList<>();
         AddUserInfoJP.setVisible(false);
         DeleteUserInfoJP.setVisible(false);
         ReviseUserInfoJP.setVisible(true);
         FindUserInfoJP.setVisible(false);
     }
     private void FindUserInfoJP(){
-        users = new ArrayList<>();
         AddUserInfoJP.setVisible(false);
         DeleteUserInfoJP.setVisible(false);
         ReviseUserInfoJP.setVisible(false);
@@ -374,15 +372,14 @@ public class AdMenu implements ActionListener {
         //如果用户选择的是OK
         if (userOption == JOptionPane.OK_OPTION) {
             ncre.Load();
-            // TODO 清除管理员登录状态
             users = new ArrayList<>();
         }
     }
-    private void AddUserInfoAddLine(){
+    private void AddUserInfoAddLine(){  // 加一行数据
         AddUserInfomodel.getRowCount();
         AddUserInfomodel.addRow(new String[] {String.valueOf(AddUserInfomodel.getRowCount()+1)});
     }
-    private void AddUserInfoAdd() {
+    private void AddUserInfoAdd(){
         Vector<Vector> a = AddUserInfomodel.getDataVector();
         for (int i = 0; i < a.size(); i++) {
             User Tuser = new User();
@@ -406,10 +403,8 @@ public class AdMenu implements ActionListener {
         if (ncreService.AddUserInfos(users)) {
             AddUserInfomodel.setRowCount(0);
             JOptionPane.showMessageDialog(null, "账号已添加！", "消息提示", JOptionPane.WARNING_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(null, "信息填写有误，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
         }
-
+        users = new ArrayList<>();
     }
     private void AddUserInfoClear(){
         users = new ArrayList<>();
@@ -517,8 +512,9 @@ public class AdMenu implements ActionListener {
         if(Objects.equals(e.getActionCommand(), "AdLogoffButton")){
             this.AdLogoffButton();
         }
-        if(Objects.equals(e.getActionCommand(), "AddUserInfoAdd")){
+        if(Objects.equals(e.getActionCommand(), "AddUserInfoAdd")) {
             this.AddUserInfoAdd();
+
         }
         if(Objects.equals(e.getActionCommand(), "AddUserInfoAddLine")){
             this.AddUserInfoAddLine();

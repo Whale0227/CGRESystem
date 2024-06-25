@@ -1,5 +1,6 @@
 package org.ncre.service.impl;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.ncre.data.dao.AdministratorAccountDao;
 import org.ncre.data.dao.UserDao;
 import org.ncre.data.domain.AdministratorAccount;
@@ -9,6 +10,8 @@ import org.ncre.data.domain.UserInfo;
 import org.ncre.service.NCREService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
@@ -92,20 +95,24 @@ public class NCREServiceImpl implements NCREService {
         return true;
     }
 
+
     @Override
     public boolean AddUserInfos(List<User> users) {
         boolean Flag = true;
-        if(users.size() == 0){
+        if(users.isEmpty()){
             return false;
         }
-        for (int i = 0; i < users.size(); i++) {
+        for (User user : users) {
+            if (userDao.FindAPByAccount(user.getAccount().getAccount()) != null) {
+                JOptionPane.showMessageDialog(null, "账户" + user.getAccount().getAccount() + "已存在，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
             try {
-                userDao.SaveAcPw(users.get(i).getAccount());
-                userDao.SaveInfoInit(users.get(i).getAccount());
-                userDao.UpadteAllInfoByAccount(users.get(i).getUserInfo());
-            }catch (Exception e){
-                Flag = false;
-                break;
+                userDao.SaveAcPw(user.getAccount());
+                userDao.SaveInfoInit(user.getAccount());
+                userDao.UpadteAllInfoByAccount(user.getUserInfo());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "请填写正确信息，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
             }
         }
         return Flag;
