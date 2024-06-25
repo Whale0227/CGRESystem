@@ -11,8 +11,11 @@ import org.springframework.stereotype.Component;
 public interface UserDao {
 
     @Update("update userinfo set userinfo.name = #{name},userinfo.schoolid = #{schoolid},userinfo.gender = #{gender}," +
-            "age = #{age},phone = #{phone},school = #{school},examerank = #{examerank} where account = #{account}")
+            "userinfo.age = #{age},userinfo.phone = #{phone},userinfo.school = #{school}," +
+            "userinfo.examerank = #{examerank} where userinfo.account = #{account}")
     void UpadteAllInfoByAccount(UserInfo userInfo);
+    @Update("update useraccount set password = #{password} where account = #{account}")
+    void UpadtePasswordByAccount(UserAccount userAccount);
     @Insert("insert into userinfo(account)values (#{account})")
     void SaveInfoInit(UserAccount userAccount);
     @Select("select *from useraccount where account = #{account}")

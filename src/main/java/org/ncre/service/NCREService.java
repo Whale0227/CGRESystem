@@ -15,4 +15,6 @@ public interface NCREService {
     boolean SaveUserAcPw(UserAccount userAccount);
     boolean SaveUserInfo(UserInfo userInfo);
     void DeleteUserInfoAccountByAccount(UserAccount userAccount);
+    boolean AddUserInfos(List<User> users);
+    boolean UpdateUserInfo(User user);
 }

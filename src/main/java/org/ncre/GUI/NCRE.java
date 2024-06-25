@@ -18,11 +18,8 @@ public class NCRE extends JFrame implements ActionListener {
     private UserLogin userLogin;
 
     private UserMenu userMenu;
-    private UserAccount userAccount;
-
 
     public NCRE(NCREService ncreService){
-        userAccount = new UserAccount();
         this.ncreService = ncreService;
         this.setResizable(false);
         this.setSize(styles.MaxWidth,styles.MaxHeight);
@@ -44,7 +41,7 @@ public class NCRE extends JFrame implements ActionListener {
         /**
          * 管理员登录成功后菜单
          */
-        adMenu = new AdMenu(styles,ncreService);
+        adMenu = new AdMenu(styles,ncreService,this);
         AdLoginJP = new JPanel();
         AdLoginJP = adMenu.Init();
 
@@ -64,7 +61,6 @@ public class NCRE extends JFrame implements ActionListener {
         this.add(LoadPanel);
         this.add(AdLoginJP);
         this.add(UserMenuJP);
-
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

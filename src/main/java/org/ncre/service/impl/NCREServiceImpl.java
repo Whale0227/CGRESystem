@@ -1,6 +1,5 @@
 package org.ncre.service.impl;
 
-
 import org.ncre.data.dao.AdministratorAccountDao;
 import org.ncre.data.dao.UserDao;
 import org.ncre.data.domain.AdministratorAccount;
@@ -10,8 +9,8 @@ import org.ncre.data.domain.UserInfo;
 import org.ncre.service.NCREService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.swing.*;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,13 +50,6 @@ public class NCREServiceImpl implements NCREService {
     }
     @Override
     public boolean SaveUserInfo(UserInfo userInfo) {
-
-//            if ((!Objects.equals(ReviseInfoRankJTF.getText(), "") || !Objects.equals(ReviseInfoRankJTF.getText(), "无")) &&
-//                    (Objects.equals(SignUpNameJTF.getText(), "") || Objects.equals(SignUpAgeJTF.getText(), "") ||
-//                    Objects.equals(SignUpSchoolidJTF.getText(), "") || Objects.equals(SignUpPhoneJTF.getText(), "") ||
-//                    Objects.equals(SignUpSchoolJTF.getText(), "") || SignUpGender.getSelectedItem() == "-请选择-")
-//                    ) {
-//                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
         boolean FlagPhone = false;
         if((userInfo.getExamerank()!=null&& !Objects.equals(userInfo.getExamerank(), "无"))&&
                 (Objects.equals(userInfo.getName(), "") || Objects.equals(userInfo.getGender(), "-请选择-") ||
@@ -78,5 +70,44 @@ public class NCREServiceImpl implements NCREService {
     public void DeleteUserInfoAccountByAccount(UserAccount userAccount){
         userDao.DeleteUserInfoByAccount(userAccount);
         userDao.DeleteUserAccountByAccount(userAccount);
+    }
+
+    @Override
+    public boolean UpdateUserInfo(User user) {
+        UserInfo userInfo = user.getUserInfo();
+        UserAccount userAccount = user.getAccount();
+        if(Objects.equals(userAccount.getPassword(), "")|| (Objects.equals(userInfo.getName(), "") ||
+                Objects.equals(userInfo.getGender(), "") || Objects.equals(userInfo.getPhone(), "") ||
+                Objects.equals(userInfo.getSchoolid(), "") || Objects.equals(userInfo.getSchool(), ""))){
+            JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        try {
+            userDao.UpadtePasswordByAccount(userAccount);
+            userDao.UpadteAllInfoByAccount(userInfo);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean AddUserInfos(List<User> users) {
+        boolean Flag = true;
+        if(users.size() == 0){
+            return false;
+        }
+        for (int i = 0; i < users.size(); i++) {
+            try {
+                userDao.SaveAcPw(users.get(i).getAccount());
+                userDao.SaveInfoInit(users.get(i).getAccount());
+                userDao.UpadteAllInfoByAccount(users.get(i).getUserInfo());
+            }catch (Exception e){
+                Flag = false;
+                break;
+            }
+        }
+        return Flag;
     }
 }
