@@ -68,7 +68,6 @@ public class UserMenu implements ActionListener {
         UserMenuAccountJL1.setForeground(Color.white);
         UserMenuAccountJL2 = new JLabel("");
         UserMenuAccountJL2.setForeground(Color.white);
-
         Picture = new JLabel();
         icon = new ImageIcon("src\\main\\resources\\Pictures\\NCRE.jpg");
 
@@ -89,7 +88,6 @@ public class UserMenu implements ActionListener {
         PictureJP.setLayout(null);
         UserMenuSignUpJP.setLayout(null);
         UserMenuReviseInfoJP.setLayout(null);
-
         PictureJP.setBounds(0,0,1200,70);
         Picture.setBounds(0,0,400,70);
         UserMenuAccountJP.setBounds(800,40,400,30); // 表头、账号
@@ -97,6 +95,7 @@ public class UserMenu implements ActionListener {
         UserMenuFirstJP.setBounds(0,140,1200,660);
         UserMenuSignUpJP.setBounds(0,140,1200,660);
         UserMenuReviseInfoJP.setBounds(0,140,1200,660);
+
 
         UserMenuAccountJL1.setFont(styles.SmallJLFont);
         UserMenuAccountJL2.setFont(styles.SmallJLFont);
@@ -134,9 +133,8 @@ public class UserMenu implements ActionListener {
         PictureJP.setBackground(Color.white);
         UserMenuAccountJP.setBackground(new Color(65,91,128));
         UserMenuBarJP.setBackground(Color.red);
-        UserMenuFirstJP.setBackground(Color.pink);
-        UserMenuSignUpJP.setBackground(Color.green);
-        UserMenuReviseInfoJP.setBackground(Color.magenta);
+        UserMenuSignUpJP.setBackground(new Color(215, 215, 215));
+        UserMenuReviseInfoJP.setBackground(new Color(215, 215, 215));
 
         Picture.setIcon(icon);
         UserMenuJP.add(PictureJP);
@@ -220,6 +218,8 @@ public class UserMenu implements ActionListener {
         SignUpInfoJPOverAll = new JPanel(null);
 
         SignUpButtonSignupJP.setBounds(300,500,600,180);
+        SignUpButtonSignupJP.setBackground(new Color(215, 215, 215));
+
         SignUpInfoJP.setBounds(240,0,740,450);
         SignUpInfoJPOverAll.setBounds(200,0,500,800);
         SignUpInfoJP1.setBounds(0,70,500,70);
@@ -336,7 +336,7 @@ public class UserMenu implements ActionListener {
         ReviseInfoButtonJP = new JPanel();
         ReviseInfoJP = new JPanel(null);
         ReviseInfoJPOverAll = new JPanel(null);
-
+        ReviseInfoButtonJP.setBackground(new Color(215, 215, 215));
         ReviseInfoButtonJP.setBounds(300,500,600,180);
         ReviseInfoJP.setBounds(240,0,740,450);
         ReviseInfoJPOverAll.setBounds(200,0,500,800);
@@ -619,7 +619,11 @@ public class UserMenu implements ActionListener {
             this.ReviseInfoJP();
         }
         else if(Objects.equals(e.getActionCommand(), "LogOffJP")){
-            this.LogOffJP();
+            int userOption =  JOptionPane.showConfirmDialog(null,"您要登出账户吗？","提示",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);	//确认对话框
+            //如果用户选择的是OK
+            if (userOption == JOptionPane.OK_OPTION) {
+                LogOffJP();
+            }
         }
         else if(Objects.equals(e.getActionCommand(), "LogOutJP")){
             this.LogOut();

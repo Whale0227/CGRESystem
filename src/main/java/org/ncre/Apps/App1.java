@@ -15,6 +15,8 @@ public class App1 {
 //        userAccount.setAccount("1");
 //        userAccount.setPassword("1");
 //        ncre.UserMenu(userAccount);
+//
+          ncre.AdMenu();
 
     }
 }

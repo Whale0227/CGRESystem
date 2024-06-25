@@ -10,11 +10,10 @@ import java.util.Objects;
 
 public class NCRE extends JFrame implements ActionListener {
     private Styles styles = new Styles();
-    private AdLoginMenu adLoginMenu;
+    private AdMenu adMenu;
     private Load load;
     private JPanel LoadPanel,AdLoginJP,UserMenuJP;
     private NCREService ncreService;
-//    private AdLoginTT adLogin;
     private AdLogin adLogin;
     private UserLogin userLogin;
 
@@ -45,9 +44,9 @@ public class NCRE extends JFrame implements ActionListener {
         /**
          * 管理员登录成功后菜单
          */
-        adLoginMenu = new AdLoginMenu(styles,ncreService);
+        adMenu = new AdMenu(styles,ncreService);
         AdLoginJP = new JPanel();
-        AdLoginJP = adLoginMenu.Init();
+        AdLoginJP = adMenu.Init();
 
         /**
          * 用户登录界面
@@ -77,7 +76,7 @@ public class NCRE extends JFrame implements ActionListener {
         UserMenuJP.setVisible(false);
     }
 
-    public void AdL(){
+    public void AdMenu(){
         LoadPanel.setVisible(false);
         AdLoginJP.setVisible(true);
         UserMenuJP.setVisible(false);

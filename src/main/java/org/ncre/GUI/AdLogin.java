@@ -1,9 +1,8 @@
 package org.ncre.GUI;
 
 import org.ncre.data.domain.AdministratorAccount;
-import org.ncre.data.domain.UserAccount;
 import org.ncre.service.NCREService;
-import org.springframework.stereotype.Component;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -87,9 +86,9 @@ public class AdLogin extends JFrame implements ActionListener {
         LoginPasswordButton.setActionCommand("LoginPBChange");
         LoginJPF.setEchoChar('*');  // 设置密码隐藏
 
-        FlowLayout UserButtonHgap=new FlowLayout();
-        UserButtonHgap.setHgap(100);//水平间距
-        LoginJP4.setLayout(UserButtonHgap);
+        FlowLayout AdLoginButtonGap=new FlowLayout();
+        AdLoginButtonGap.setHgap(100);//水平间距
+        LoginJP4.setLayout(AdLoginButtonGap);
     }
     public void Init(){
         LoginClear();
@@ -111,7 +110,7 @@ public class AdLogin extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "登录成功！","消息提示",JOptionPane.WARNING_MESSAGE);
                 LoginClear();
                 dispose();  //使文原窗体消失
-                // TODO 管理员登录界面
+                ncre.AdMenu();
             }else{
                 administratorAccount = null;
                 JOptionPane.showMessageDialog(null, "账号或密码错误，请重新输入！","消息提示",JOptionPane.WARNING_MESSAGE);
