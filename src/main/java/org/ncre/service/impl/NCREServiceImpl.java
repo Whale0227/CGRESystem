@@ -91,7 +91,6 @@ public class NCREServiceImpl implements NCREService {
         }
         return true;
     }
-
     private List<User> getUsers(List<User> users, List<UserInfo> infos, List<UserAccount> accounts) {
         for (int i = 0; i < accounts.size(); i++) {
             User t = new User();
@@ -109,7 +108,6 @@ public class NCREServiceImpl implements NCREService {
         List<UserAccount> accounts = userDao.GetAllUsersAccountByAccount(account);
         return getUsers(Users, infos, accounts);
     }
-
     @Override
     public List<User> GetAllUsersInfoByName(String name) {
         name = "%"+name+"%";
@@ -135,7 +133,6 @@ public class NCREServiceImpl implements NCREService {
 
         return getUsers(Users, infos, accounts);
     }
-
     @Override
     public List<User> GetAllUsersInfoBySchoolid(String schoolid) {
         schoolid = "%"+schoolid+"%";
@@ -149,7 +146,6 @@ public class NCREServiceImpl implements NCREService {
 
         return getUsers(Users, infos, accounts);
     }
-
     @Override
     public List<User> GetAllUsersInfoBySchool(String school) {
         school = "%"+school+"%";
@@ -162,7 +158,6 @@ public class NCREServiceImpl implements NCREService {
         }
         return getUsers(Users, infos, accounts);
     }
-
     @Override
     public List<User> AddUserInfos(List<User> users) {
         if(users.isEmpty()){
