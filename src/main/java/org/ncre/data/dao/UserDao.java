@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Update;
 import org.ncre.data.domain.UserAccount;
 import org.ncre.data.domain.UserInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 @Component
 public interface UserDao {
 
@@ -19,13 +22,27 @@ public interface UserDao {
     @Insert("insert into userinfo(account)values (#{account})")
     void SaveInfoInit(UserAccount userAccount);
     @Select("select *from useraccount where account = #{account}")
-    UserAccount FindAPByAccount(String account);
+    UserAccount GetAPByAccount(String account);
     @Select("select *from userinfo where account = #{account}")
-    UserInfo FindInformationByAccount(String account);
+    UserInfo GetInfoByAccount(String account);
     @Insert("insert into useraccount(account,password) values (#{account},#{password})")
     void SaveAcPw(UserAccount account);
     @Delete("delete from useraccount where account = #{account}")
     void DeleteUserAccountByAccount(UserAccount userAccount);
     @Delete("delete from userinfo where account = #{account}")
     void DeleteUserInfoByAccount(UserAccount userAccount);
+
+    @Select("select *from useraccount where account like #{account}")
+    List<UserAccount> GetAllUsersAccountByAccount(String account);
+    @Select("select *from userinfo where account like #{account}")
+    List<UserInfo> GetAllUsersInfoByAccount(String account);
+    @Select("select *from userinfo where name like #{name}")
+    List<UserInfo> GetAllUsersInfoByName(String name);
+    @Select("select *from userinfo where phone like #{phone}")
+    List<UserInfo> GetAllUsersInfoByPhone(String phone);
+    @Select("select *from userinfo where schoolid like #{schoolid}")
+    List<UserInfo> GetAllUsersInfoBySchoolid(String schoolid);
+    @Select("select *from userinfo where school like #{school}")
+    List<UserInfo> GetAllUsersInfoBySchool(String school);
+
 }

@@ -1,6 +1,5 @@
 package org.ncre.service.impl;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.ncre.data.dao.AdministratorAccountDao;
 import org.ncre.data.dao.UserDao;
 import org.ncre.data.domain.AdministratorAccount;
@@ -10,10 +9,9 @@ import org.ncre.data.domain.UserInfo;
 import org.ncre.service.NCREService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.*;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,11 +27,11 @@ public class NCREServiceImpl implements NCREService {
     }
     @Override
     public UserAccount GetUserAPByAccount(String account) {
-        return userDao.FindAPByAccount(account);
+        return userDao.GetAPByAccount(account);
     }
     @Override
     public UserInfo GetUserInfoByAccount(String account) {
-        return userDao.FindInformationByAccount(account);
+        return userDao.GetInfoByAccount(account);
     }
     @Override
     public AdministratorAccount GetADAccountByAccount(String account) {
@@ -74,7 +72,6 @@ public class NCREServiceImpl implements NCREService {
         userDao.DeleteUserInfoByAccount(userAccount);
         userDao.DeleteUserAccountByAccount(userAccount);
     }
-
     @Override
     public boolean UpdateUserInfo(User user) {
         UserInfo userInfo = user.getUserInfo();
@@ -95,26 +92,100 @@ public class NCREServiceImpl implements NCREService {
         return true;
     }
 
+    private List<User> getUsers(List<User> users, List<UserInfo> infos, List<UserAccount> accounts) {
+        for (int i = 0; i < accounts.size(); i++) {
+            User t = new User();
+            t.setAccount(accounts.get(i));
+            t.setUserInfo(infos.get(i));
+            users.add(t);
+        }
+        return users;
+    }
+    @Override
+    public List<User> GetAllUsersInfoByAccount(String account) {
+        account = "%"+account+"%";
+        List<User> Users = new ArrayList<>();
+        List<UserInfo> infos = userDao.GetAllUsersInfoByAccount(account);
+        List<UserAccount> accounts = userDao.GetAllUsersAccountByAccount(account);
+        return getUsers(Users, infos, accounts);
+    }
 
     @Override
-    public boolean AddUserInfos(List<User> users) {
-        boolean Flag = true;
-        if(users.isEmpty()){
-            return false;
+    public List<User> GetAllUsersInfoByName(String name) {
+        name = "%"+name+"%";
+        List<User> Users = new ArrayList<>();
+        List<UserInfo> infos = userDao.GetAllUsersInfoByName(name);
+        List<UserAccount> accounts  = new ArrayList<>();
+        for (UserInfo info : infos) {
+            UserAccount TUserAccount = userDao.GetAPByAccount(info.getAccount());
+            accounts.add(TUserAccount);
         }
-        for (User user : users) {
-            if (userDao.FindAPByAccount(user.getAccount().getAccount()) != null) {
-                JOptionPane.showMessageDialog(null, "账户" + user.getAccount().getAccount() + "已存在，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
-                return false;
+        return getUsers(Users, infos, accounts);
+    }
+    @Override
+    public List<User> GetAllUsersInfoByPhone(String phone) {
+        phone = "%"+phone+"%";
+        List<User> Users = new ArrayList<>();
+        List<UserInfo> infos = userDao.GetAllUsersInfoByPhone(phone);
+        List<UserAccount> accounts  = new ArrayList<>();
+        for (UserInfo info : infos) {
+            UserAccount TUserAccount = userDao.GetAPByAccount(info.getAccount());
+            accounts.add(TUserAccount);
+        }
+
+        return getUsers(Users, infos, accounts);
+    }
+
+    @Override
+    public List<User> GetAllUsersInfoBySchoolid(String schoolid) {
+        schoolid = "%"+schoolid+"%";
+        List<User> Users = new ArrayList<>();
+        List<UserInfo> infos = userDao.GetAllUsersInfoBySchoolid(schoolid);
+        List<UserAccount> accounts  = new ArrayList<>();
+        for (UserInfo info : infos) {
+            UserAccount TUserAccount = userDao.GetAPByAccount(info.getAccount());
+            accounts.add(TUserAccount);
+        }
+
+        return getUsers(Users, infos, accounts);
+    }
+
+    @Override
+    public List<User> GetAllUsersInfoBySchool(String school) {
+        school = "%"+school+"%";
+        List<User> Users = new ArrayList<>();
+        List<UserInfo> infos = userDao.GetAllUsersInfoBySchool(school);
+        List<UserAccount> accounts  = new ArrayList<>();
+        for (UserInfo info : infos) {
+            UserAccount TUserAccount = userDao.GetAPByAccount(info.getAccount());
+            accounts.add(TUserAccount);
+        }
+        return getUsers(Users, infos, accounts);
+    }
+
+    @Override
+    public List<User> AddUserInfos(List<User> users) {
+        if(users.isEmpty()){
+            return null;
+        }
+        int len = users.size();
+        for (int i = 0;i<len;i++) {
+            if (userDao.GetAPByAccount(users.get(i).getAccount().getAccount()) != null) {
+                JOptionPane.showMessageDialog(null, "账户" + users.get(i).getAccount().getAccount() + "已存在，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                return users;
             }
             try {
-                userDao.SaveAcPw(user.getAccount());
-                userDao.SaveInfoInit(user.getAccount());
-                userDao.UpadteAllInfoByAccount(user.getUserInfo());
+                userDao.SaveAcPw(users.get(i).getAccount());
+                userDao.SaveInfoInit(users.get(i).getAccount());
+                userDao.UpadteAllInfoByAccount(users.get(i).getUserInfo());
+                users.remove(i);
+                len--;
+                i--;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "请填写正确信息，请检查！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                return users;
             }
         }
-        return Flag;
+        return users;
     }
 }

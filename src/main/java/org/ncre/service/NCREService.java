@@ -19,6 +19,12 @@ public interface NCREService {
     boolean SaveUserInfo(UserInfo userInfo);
     void DeleteUserInfoAccountByAccount(UserAccount userAccount);
 
-    boolean AddUserInfos(List<User> users);
+    List<User> AddUserInfos(List<User> users);
     boolean UpdateUserInfo(User user);
+    List<User> GetAllUsersInfoByAccount(String account);
+    List<User> GetAllUsersInfoByName(String name);
+    List<User> GetAllUsersInfoByPhone(String phone);
+    List<User> GetAllUsersInfoBySchoolid(String schoolid);
+    List<User> GetAllUsersInfoBySchool(String school);
+
 }
