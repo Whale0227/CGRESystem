@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({"org.ncre.service"})
 @Import({JdbcConfig.class,MyBatisConfig.class})
 @PropertySource("classpath:jdbc.properties")
-@EnableTransactionManagement // 开启事务
 public class SpringConfig {
 }
 

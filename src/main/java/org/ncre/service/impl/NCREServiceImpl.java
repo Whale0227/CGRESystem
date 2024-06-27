@@ -22,10 +22,6 @@ public class NCREServiceImpl implements NCREService {
     @Autowired
     private UserDao userDao;
     @Override
-    public List<AdministratorAccount> GetAllAdministratorAccount() {
-        return administerAccountdao.getAllAccounts();
-    }
-    @Override
     public UserAccount GetUserAPByAccount(String account) {
         return userDao.GetAPByAccount(account);
     }

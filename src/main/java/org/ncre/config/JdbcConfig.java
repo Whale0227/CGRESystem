@@ -27,12 +27,4 @@ public class JdbcConfig {
         dataSource.setPassword(password);
         return dataSource;
     }
-
-    // 事务管理
-    @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
-        DataSourceTransactionManager ds = new DataSourceTransactionManager();
-        ds.setDataSource(dataSource);
-        return ds;
-    }
 }

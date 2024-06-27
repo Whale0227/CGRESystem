@@ -9,7 +9,7 @@ public class UserInfo {
     private Integer age;
     private String phone;
     private String school;
-
+    private String examerank;
     public String getExamerank() {
         return examerank;
     }
@@ -17,9 +17,6 @@ public class UserInfo {
     public void setExamerank(String examerank) {
         this.examerank = examerank;
     }
-
-    private String examerank;
-
     @Override
     public String toString() {
         return "UserInfo{" +

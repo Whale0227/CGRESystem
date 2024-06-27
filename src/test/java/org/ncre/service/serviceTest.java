@@ -15,10 +15,6 @@ public class serviceTest {
     private NCREService cgermService;
 
     @Test
-    public void GetAllAdministrator(){
-        System.out.println(cgermService.GetAllAdministratorAccount());
-    }
-    @Test
     public void GetUserInfoByAccount(){
         System.out.println(cgermService.GetUserInfoByAccount("1"));
     }

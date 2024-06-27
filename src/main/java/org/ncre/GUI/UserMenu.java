@@ -82,7 +82,6 @@ public class UserMenu implements ActionListener {
         this.ncre = ncre;
     }
     public JPanel Init(){
-        UserInfoUpdate();
         UserMenuJP.setBounds(0,0,styles.MaxWidth,styles.MaxHeight);
         UserMenuJP.setLayout(null);
         PictureJP.setLayout(null);
@@ -133,8 +132,8 @@ public class UserMenu implements ActionListener {
         PictureJP.setBackground(Color.white);
         UserMenuAccountJP.setBackground(new Color(65,91,128));
         UserMenuBarJP.setBackground(Color.red);
-        UserMenuSignUpJP.setBackground(new Color(215, 215, 215));
-        UserMenuReviseInfoJP.setBackground(new Color(215, 215, 215));
+        UserMenuSignUpJP.setBackground(Color.yellow);
+        UserMenuReviseInfoJP.setBackground(Color.yellow);
 
         Picture.setIcon(icon);
         UserMenuJP.add(PictureJP);
@@ -157,6 +156,7 @@ public class UserMenu implements ActionListener {
         this.SignUpJPInit();
         this.ReviseInfoJPInit();
         this.FirstJPInit();
+        UserInfoUpdate();
         return UserMenuJP;
     }
     public void SignUpJPInit(){
@@ -218,7 +218,7 @@ public class UserMenu implements ActionListener {
         SignUpInfoJPOverAll = new JPanel(null);
 
         SignUpButtonSignupJP.setBounds(300,500,600,180);
-        SignUpButtonSignupJP.setBackground(new Color(215, 215, 215));
+        SignUpButtonSignupJP.setBackground(Color.blue);
 
         SignUpInfoJP.setBounds(240,0,740,450);
         SignUpInfoJPOverAll.setBounds(200,0,500,800);
@@ -336,7 +336,7 @@ public class UserMenu implements ActionListener {
         ReviseInfoButtonJP = new JPanel();
         ReviseInfoJP = new JPanel(null);
         ReviseInfoJPOverAll = new JPanel(null);
-        ReviseInfoButtonJP.setBackground(new Color(215, 215, 215));
+        ReviseInfoButtonJP.setBackground(Color.blue);
         ReviseInfoButtonJP.setBounds(300,500,600,180);
         ReviseInfoJP.setBounds(240,0,740,450);
         ReviseInfoJPOverAll.setBounds(200,0,500,800);
@@ -423,6 +423,8 @@ public class UserMenu implements ActionListener {
             SignUpJPUpdate();
             ReviseInfoJPUpdate();
         }catch (NullPointerException e){
+            SignUpJPUpdate();
+            ReviseInfoJPUpdate();
         }
     }
     private void SignUpJPUpdate(){
@@ -459,13 +461,7 @@ public class UserMenu implements ActionListener {
                 }
             }
         }else {
-            SignUpNameJTF.setEnabled(true);
-            SignUpAgeJTF.setEnabled(true);
-            SignUpGender.setEnabled(true);
-            SignUpSchoolidJTF.setEnabled(true);
-            SignUpPhoneJTF.setEnabled(true);
-            SignUpSchoolJTF.setEnabled(true);
-            SignUpRank.setEnabled(true);
+
             SignUpNameJTF.setText("");
             SignUpAgeJTF.setText("");
             SignUpGender.setSelectedItem("-请选择-");
@@ -473,6 +469,13 @@ public class UserMenu implements ActionListener {
             SignUpPhoneJTF.setText("");
             SignUpSchoolJTF.setText("");
             SignUpRank.setSelectedItem("-请选择-");
+            SignUpNameJTF.setEnabled(true);
+            SignUpAgeJTF.setEnabled(true);
+            SignUpGender.setEnabled(true);
+            SignUpSchoolidJTF.setEnabled(true);
+            SignUpPhoneJTF.setEnabled(true);
+            SignUpSchoolJTF.setEnabled(true);
+            SignUpRank.setEnabled(true);
         }
     }
     public void SignUpJP(){
@@ -580,25 +583,31 @@ public class UserMenu implements ActionListener {
     }
     public void Revise() {
         try {
-            Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
-            String TName = ReviseInfoNameJTF.getText();
-            String TGender = (String) ReviseInfoGender.getSelectedItem();
-            String TSchoolid = ReviseInfoSchoolidJTF.getText();
-            String TSchool = ReviseInfoSchoolJTF.getText();
-            String TRank = ReviseInfoRankJTF.getText();
-            String TPhone = ReviseInfoPhoneJTF.getText();
-            UserInfo userInfo = new UserInfo();
-            userInfo.setAccount(user.getAccount().getAccount());
-            userInfo.setName(TName);
-            userInfo.setGender(TGender);
-            userInfo.setAge(TAge);
-            userInfo.setSchoolid(TSchoolid);
-            userInfo.setSchool(TSchool);
-            userInfo.setExamerank(TRank);
-            userInfo.setPhone(TPhone);
-            if (ncreService.SaveUserInfo(userInfo)) {
-                JOptionPane.showMessageDialog(null, "修改成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
-                ReviseInfoJP();
+            if (Objects.equals(ReviseInfoNameJTF.getText(), "") || Objects.equals(ReviseInfoAgeJTF.getText(), "") ||
+                    Objects.equals(ReviseInfoSchoolidJTF.getText(), "") || Objects.equals(ReviseInfoPhoneJTF.getText(), "") ||
+                    Objects.equals(ReviseInfoSchoolJTF.getText(), "") || ReviseInfoGender.getSelectedItem() == "-请选择-" ) {
+                JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);
+            }else {
+                Integer TAge = Integer.valueOf(ReviseInfoAgeJTF.getText());
+                String TName = ReviseInfoNameJTF.getText();
+                String TGender = (String) ReviseInfoGender.getSelectedItem();
+                String TSchoolid = ReviseInfoSchoolidJTF.getText();
+                String TSchool = ReviseInfoSchoolJTF.getText();
+                String TRank = ReviseInfoRankJTF.getText();
+                String TPhone = ReviseInfoPhoneJTF.getText();
+                UserInfo userInfo = new UserInfo();
+                userInfo.setAccount(user.getAccount().getAccount());
+                userInfo.setName(TName);
+                userInfo.setGender(TGender);
+                userInfo.setAge(TAge);
+                userInfo.setSchoolid(TSchoolid);
+                userInfo.setSchool(TSchool);
+                userInfo.setExamerank(TRank);
+                userInfo.setPhone(TPhone);
+                if (ncreService.SaveUserInfo(userInfo)) {
+                    JOptionPane.showMessageDialog(null, "修改成功！", "消息提示", JOptionPane.WARNING_MESSAGE);
+                    ReviseInfoJP();
+                }
             }
         }catch (NumberFormatException e){
             JOptionPane.showMessageDialog(null, "请将信息填写完整！", "消息提示", JOptionPane.WARNING_MESSAGE);

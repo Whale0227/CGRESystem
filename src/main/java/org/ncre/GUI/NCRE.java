@@ -57,14 +57,12 @@ public class NCRE extends JFrame implements ActionListener {
         UserMenuJP = new JPanel();
         UserMenuJP = userMenu.Init();
 
-
+        Load();
         this.add(LoadPanel);
         this.add(AdLoginJP);
         this.add(UserMenuJP);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
     }
     public void Load(){
         LoadPanel.setVisible(true);

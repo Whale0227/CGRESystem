@@ -340,6 +340,8 @@ public class AdMenu implements ActionListener {
     }
     private void FindUserInfoJPInit(){
 
+        String[][] Finddatas = {};
+        String[] Findtitles = { "序号","账号","密码","姓名", "性别","年龄","学号","手机号","学校","考试等级" };
 
         FindUserInfoTitleJP = new JPanel();
         FindUserInfoFindJP = new JPanel();
@@ -400,19 +402,16 @@ public class AdMenu implements ActionListener {
         FindUserInfoButtonJP.add(FindUserInfoClearButton);
 
 
-        FindUserInfomodel = new DefaultTableModel(datas, titles);
+        FindUserInfomodel = new DefaultTableModel(Finddatas, Findtitles);
         FindUserInfoTable = new JTable(FindUserInfomodel){
             public boolean isCellEditable(int row, int column)
-            {   // 设置第一列和第二列不可编辑
-                if(column == 0||column == 1){
-                    return false;
-                }
-                return true;
+            {
+                return false;
             }
         };
 
         FindUserInfoTable.getTableHeader().setFont(styles.SmallJLFont);  // 设置表头名称字体样式
-        FindUserInfoTable.setPreferredScrollableViewportSize(new Dimension(800, 350));
+        FindUserInfoTable.setPreferredScrollableViewportSize(new Dimension(900, 350));
         FindUserInfoTable.setRowHeight(30); // 设置行高
         //ReviseUserInfoTable.setEnabled(false); // 设置不可编辑
         RowSorter sorter = new TableRowSorter(FindUserInfomodel);
@@ -618,7 +617,7 @@ public class AdMenu implements ActionListener {
                             String.valueOf(i+1),users.get(i).getAccount().getAccount(),users.get(i).getAccount().getPassword(),
                             users.get(i).getUserInfo().getName(), users.get(i).getUserInfo().getGender(),
                             String.valueOf(users.get(i).getUserInfo().getAge()),users.get(i).getUserInfo().getSchoolid(),
-                            users.get(i).getUserInfo().getPhone(),users.get(i).getUserInfo().getSchool()
+                            users.get(i).getUserInfo().getPhone(),users.get(i).getUserInfo().getSchool(),users.get(i).getUserInfo().getExamerank()
                     });
                 }
             }
