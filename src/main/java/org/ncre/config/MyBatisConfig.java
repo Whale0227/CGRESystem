@@ -14,7 +14,6 @@ public class MyBatisConfig {
         ssfb.setTypeAliasesPackage("org.ncre.data.domain");
         return ssfb;
     }
-
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
